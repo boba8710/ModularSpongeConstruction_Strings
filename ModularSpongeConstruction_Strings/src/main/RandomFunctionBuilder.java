@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class RandomFunctionBuilder {
 	int funcCount;
-	static HashOperation[] operations = {new HashOperations.AND(), new HashOperations.LROT(), new HashOperations.NOT(), new HashOperations.OR(), new HashOperations.SWAP(), new HashOperations.SWAP0(), new HashOperations.SWAP1(), new HashOperations.SWAP2(), new HashOperations.XOR()};
+	static HashOperation[] operations = {/*new HashOperations.AND(),*/ new HashOperations.LROT(), new HashOperations.NOT(), /*new HashOperations.OR(),*/ new HashOperations.SWAP(), new HashOperations.SWAP0(), new HashOperations.SWAP1(), new HashOperations.SWAP2(), new HashOperations.XOR()};
 	RandomFunctionBuilder(int funcCount){
 		this.funcCount = funcCount;
 	}
@@ -12,7 +12,7 @@ public class RandomFunctionBuilder {
 		Random rand = new Random();
 		String retString = "";
 		for(int functionCount = 0; functionCount < funcCount; functionCount++) {
-			HashOperation selected = operations[rand.nextInt(8)+1];
+			HashOperation selected = operations[rand.nextInt(operations.length)];
 			String paramString = selected.getId();
 			if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 				int r, s;
