@@ -50,5 +50,27 @@ public class GeneticHelperMethods {
 		}
 		return total/iterations;
 	}
+	public String mutateRoundFunction(String roundFunction, double mutationChance) {
+		String[] operationArray = roundFunction.split("#");
+		Random mutationRandomGenerator = new Random();
+		RandomFunctionBuilder rfb = new RandomFunctionBuilder();
+		int randInt = mutationRandomGenerator.nextInt(100);
+		for(int i =0 ;i < operationArray.length; i++) {
+			if(randInt < mutationChance) {
+				operationArray[i]=rfb.genRandOperation();
+			}
+		}
+		
+		String retString = "";
+		for(String s : operationArray) {
+			retString+=s+"#";
+		}
+		
+		return retString;
+	}
+	public String crossoverRoundFunction(String parent1, String parent2, double crossoverChance) {
+		
+		return null;
+	}
 	
 }

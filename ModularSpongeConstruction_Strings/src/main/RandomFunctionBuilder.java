@@ -8,6 +8,43 @@ public class RandomFunctionBuilder {
 	RandomFunctionBuilder(int funcCount){
 		this.funcCount = funcCount;
 	}
+	public RandomFunctionBuilder() {
+	}
+	public String genRandOperation() {
+		Random rand = new Random();
+		String paramString = "";
+		HashOperation selected = operations[rand.nextInt()];
+		if(selected.getId() == "LRO" || selected.getId() == "NOT") {
+			int r, s;
+			while(true) {
+				r = rand.nextInt(1598);
+				s = rand.nextInt(1599);
+				if(s>r) {
+					break;
+				}
+			}
+				paramString+=r+","+s;
+				if(selected.getId() == "LRO") {
+					paramString+=","+rand.nextInt(200);
+				}
+			}else{
+				int n,m;
+				int offset = rand.nextInt(800);
+				while(true) {
+					n = rand.nextInt(799);
+					m = rand.nextInt(800);
+					if(n<m) {
+						break;
+					}
+				}
+				int p = n+offset;
+				int q = m+offset;
+				paramString+=n+","+m+","+p+","+q;
+		}
+		paramString+="#";
+		return paramString;
+		
+	}
 	public String genFuncString() {
 		Random rand = new Random();
 		String retString = "";
