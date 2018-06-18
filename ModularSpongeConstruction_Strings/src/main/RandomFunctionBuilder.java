@@ -10,7 +10,7 @@ public class RandomFunctionBuilder {
 	}
 	public RandomFunctionBuilder() {
 	}
-	public String genRandOperation() {
+	public String genRandOperation() { //used during mutations
 		Random rand = new Random();
 		String paramString = "";
 		HashOperation selected = operations[rand.nextInt()];
@@ -45,7 +45,7 @@ public class RandomFunctionBuilder {
 		return paramString;
 		
 	}
-	public String genFuncString() {
+	public String genFuncString() { //used during population instantiation
 		Random rand = new Random();
 		String retString = "";
 		for(int functionCount = 0; functionCount < funcCount; functionCount++) {
