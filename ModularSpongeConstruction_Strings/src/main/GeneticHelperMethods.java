@@ -69,8 +69,34 @@ public class GeneticHelperMethods {
 		return retString;
 	}
 	public String crossoverRoundFunction(String parent1, String parent2, double crossoverChance) {
-		
-		return null;
+		assert parent1.length() == parent2.length();
+		Random crossoverRoundFunctionGenerator = new Random();
+		//This assumes parent1 dominant for crossoverChance > 50
+		String child = "";
+		String[] parent1OpArray = parent1.split("#");
+		String[] parent2OpArray = parent2.split("#");
+		for(int i = 0 ; i < parent1OpArray.length; i++) {
+			int randInt = crossoverRoundFunctionGenerator.nextInt(100);
+			if(randInt < crossoverChance) {
+				child+=parent1OpArray[i]+"#";
+			}else {
+				child+=parent2OpArray[i]+"#";
+			}
+		}
+		return child;
 	}
-	
+	public void runGenerationOnSortedPopulation(SpongeConstruction_Strings[] population, double crossoverChance, double mutationChance) {
+		for(int i = population.length-1; i > population.length/2; i--) {
+			population[i]=null; //dead
+		}
+		int iterator = population.length/2;
+		for(int i = 0; i < (population.length/2)-1; i+=2) {
+			population[iterator] = new SpongeConstruction_Strings(SpongeConstruction_Strings.stateSize, SpongeConstruction_Strings.rate, SpongeConstruction_Strings.capacity, crossoverRoundFunction(population[i].f.getFunc(),population[i+1].f.getFunc(),crossoverChance));
+			iterator++;
+		}
+		iterator = 0;
+		for(int i = population.length * 3/4; i < population.length; i++) {
+			population[i] = new SpongeConstruction_Strings(SpongeConstruction_Strings.stateSize, SpongeConstruction_Strings.rate, SpongeConstruction_Strings.capacity, mutateRoundFunction(population[iterator].f.getFunc(), mutationChance));
+		}
+	}
 }
