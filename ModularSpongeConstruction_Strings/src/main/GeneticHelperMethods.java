@@ -89,13 +89,15 @@ public class GeneticHelperMethods {
 	}
 	public void runGenerationOnSortedPopulation(SpongeConstruction_Strings[] population, double populationDieOffPercent, double mutationChance) {
 		SpongeConstruction_Strings[] newPopulation = new SpongeConstruction_Strings[population.length];
-		SpongeConstruction_Strings[] topIndividuals = new SpongeConstruction_Strings[(int) (population.length-(population.length*(populationDieOffPercent)))];
-		for(int i = population.length-1; i >= (int) (population.length*populationDieOffPercent);i--) {
+		SpongeConstruction_Strings[] topIndividuals = new SpongeConstruction_Strings[(int) (population.length-(population.length*(populationDieOffPercent)))]; //The population preserved will be 1-dieoff
+		for(int i = population.length-1; i >= (int) (population.length*populationDieOffPercent);i--) { //populate top individuals array
 			topIndividuals[i-((int) (population.length*populationDieOffPercent))] = population[i];
 		}
-		int iterator = 0; //breed enough times to fill the population
+		int iterator = 0; 	//breed enough times to fill the population
+							//each iteration of breeding, the second parent shifts up one more index, i.e. 1+2,3+4,5+6 one generation becomes 1+3, 3+5 etc etc
 		for(int breedingIteration = 0 ; breedingIteration < 1/1-(populationDieOffPercent); breedingIteration++) {
 			for(int i = topIndividuals.length-2; i >= 0; i-=2) {
+				System.out.println(iterator+":");
 				newPopulation[iterator] = new SpongeConstruction_Strings(SpongeConstruction_Strings.stateSize, SpongeConstruction_Strings.rate, SpongeConstruction_Strings.capacity, new ModularRoundFunction(SpongeConstruction_Strings.stateSize, crossoverRoundFunction(topIndividuals[i].f.getFunc(),topIndividuals[(i+1+breedingIteration)%topIndividuals.length].f.getFunc(), mutationChance)));
 				iterator++;
 			}

@@ -41,7 +41,7 @@ public class RandomFunctionBuilder {
 				int q = m+offset;
 				paramString+=n+","+m+","+p+","+q;
 		}
-		paramString+="#";
+		//No hash here, the GeneticHelperMethods works on arrays
 		return paramString;
 		
 	}

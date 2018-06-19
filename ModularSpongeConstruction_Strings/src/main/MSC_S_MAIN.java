@@ -4,7 +4,7 @@ import java.util.Arrays;
 
 public class MSC_S_MAIN {
 	public static void main(String[] args) {
-		int popSize = 32;
+		int popSize = 128;
 		int messageCount = 8196;
 		int messageLenBytes = 64;
 		int funcCount = 10;
@@ -21,6 +21,7 @@ public class MSC_S_MAIN {
 		String[] messagesFlipped = new String[messageCount];
 		double[] scoreTable = new double[popSize];
 		for(int i = 0; i < functionPop.length; i++) {
+			System.out.println(i+":");
 			functionStringPop[i] = functionBuilder.genFuncString();
 			functionPop[i] = new ModularRoundFunction(stateSize, functionStringPop[i]);
 			spongeArray[i] = new SpongeConstruction_Strings(stateSize,rate,capacity, functionPop[i]);
