@@ -1,11 +1,12 @@
 package main;
-class SpongeConstruction_Strings {
+class SpongeConstruction_Strings{
 	
 	static char[] state;
 	static int rate;
 	static int capacity;
 	static int stateSize;
 	static char[] iv;
+	public double geneticScore;
 	RoundFunction f;
 	@SuppressWarnings("static-access")
 	SpongeConstruction_Strings(int stateSize, int rate, int capacity){

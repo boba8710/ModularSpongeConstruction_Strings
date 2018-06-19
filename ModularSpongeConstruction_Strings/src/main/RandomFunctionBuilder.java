@@ -13,7 +13,7 @@ public class RandomFunctionBuilder {
 	public String genRandOperation() { //used during mutations
 		Random rand = new Random();
 		String paramString = "";
-		HashOperation selected = operations[rand.nextInt()];
+		HashOperation selected = operations[rand.nextInt(operations.length)];
 		if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 			int r, s;
 			while(true) {

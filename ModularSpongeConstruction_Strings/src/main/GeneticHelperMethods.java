@@ -1,5 +1,7 @@
 package main;
 import org.apache.commons.math3.random.MersenneTwister;
+
+import java.util.Arrays;
 import java.util.Random;
 public class GeneticHelperMethods {
 	static Random rand = new Random();
@@ -54,9 +56,9 @@ public class GeneticHelperMethods {
 		String[] operationArray = roundFunction.split("#");
 		Random mutationRandomGenerator = new Random();
 		RandomFunctionBuilder rfb = new RandomFunctionBuilder();
-		int randInt = mutationRandomGenerator.nextInt(100);
+		double rand = mutationRandomGenerator.nextDouble();
 		for(int i =0 ;i < operationArray.length; i++) {
-			if(randInt < mutationChance) {
+			if(rand < mutationChance) {
 				operationArray[i]=rfb.genRandOperation();
 			}
 		}
@@ -68,35 +70,38 @@ public class GeneticHelperMethods {
 		
 		return retString;
 	}
-	public String crossoverRoundFunction(String parent1, String parent2, double crossoverChance) {
+	public String crossoverRoundFunction(String parent1, String parent2, double mutationChance) {
 		assert parent1.length() == parent2.length();
 		Random crossoverRoundFunctionGenerator = new Random();
-		//This assumes parent1 dominant for crossoverChance > 50
 		String child = "";
 		String[] parent1OpArray = parent1.split("#");
 		String[] parent2OpArray = parent2.split("#");
 		for(int i = 0 ; i < parent1OpArray.length; i++) {
-			int randInt = crossoverRoundFunctionGenerator.nextInt(100);
-			if(randInt < crossoverChance) {
-				child+=parent1OpArray[i]+"#";
-			}else {
-				child+=parent2OpArray[i]+"#";
-			}
+			double rand = crossoverRoundFunctionGenerator.nextDouble();
+				if(rand >= 0.5) {
+					child+=parent1OpArray[i]+"#";
+				}else {
+					child+=parent2OpArray[i]+"#";
+				}
 		}
+		child = mutateRoundFunction(child, mutationChance);
 		return child;
 	}
-	public void runGenerationOnSortedPopulation(SpongeConstruction_Strings[] population, double crossoverChance, double mutationChance) {
-		for(int i = population.length-1; i > population.length/2; i--) {
-			population[i]=null; //dead
+	public void runGenerationOnSortedPopulation(SpongeConstruction_Strings[] population, double populationDieOffPercent, double mutationChance) {
+		SpongeConstruction_Strings[] newPopulation = new SpongeConstruction_Strings[population.length];
+		SpongeConstruction_Strings[] topIndividuals = new SpongeConstruction_Strings[(int) (population.length-(population.length*(populationDieOffPercent)))];
+		for(int i = population.length-1; i >= (int) (population.length*populationDieOffPercent);i--) {
+			topIndividuals[i-((int) (population.length*populationDieOffPercent))] = population[i];
 		}
-		int iterator = population.length/2;
-		for(int i = 0; i < (population.length/2)-1; i+=2) {
-			population[iterator] = new SpongeConstruction_Strings(SpongeConstruction_Strings.stateSize, SpongeConstruction_Strings.rate, SpongeConstruction_Strings.capacity, crossoverRoundFunction(population[i].f.getFunc(),population[i+1].f.getFunc(),crossoverChance));
-			iterator++;
+		int iterator = 0; //breed enough times to fill the population
+		for(int breedingIteration = 0 ; breedingIteration < 1/1-(populationDieOffPercent); breedingIteration++) {
+			for(int i = topIndividuals.length-2; i >= 0; i-=2) {
+				newPopulation[iterator] = new SpongeConstruction_Strings(SpongeConstruction_Strings.stateSize, SpongeConstruction_Strings.rate, SpongeConstruction_Strings.capacity, new ModularRoundFunction(SpongeConstruction_Strings.stateSize, crossoverRoundFunction(topIndividuals[i].f.getFunc(),topIndividuals[(i+1+breedingIteration)%topIndividuals.length].f.getFunc(), mutationChance)));
+				iterator++;
+			}
 		}
-		iterator = 0;
-		for(int i = population.length * 3/4; i < population.length; i++) {
-			population[i] = new SpongeConstruction_Strings(SpongeConstruction_Strings.stateSize, SpongeConstruction_Strings.rate, SpongeConstruction_Strings.capacity, mutateRoundFunction(population[iterator].f.getFunc(), mutationChance));
-		}
+	}
+	public void sortPopulationArray(SpongeConstruction_Strings[] population) {
+		Quicksort.quickSort(population, 0, population.length-1);
 	}
 }
