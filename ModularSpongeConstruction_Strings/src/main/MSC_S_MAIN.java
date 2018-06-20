@@ -18,6 +18,7 @@ public class MSC_S_MAIN {
 		int capacity = 1600-rate;
 		double populationDieOffPercent = 0.50; //A higher value is more selective and less diverse, a lower value is the opposite
 		double mutationChance = 0.25;	//A higher value will increase the chance of random mutation in offspring
+		int preserveTopNIndividuals = 8;
 		int generationCount = 200;
 		
 		//RANDOM GENERATION OF INITIAL POPULATION
@@ -73,7 +74,7 @@ public class MSC_S_MAIN {
 			System.out.println("Average individual runtime:	"+ghm.millisToTimestamp((long)((endTime-startTime)/popSize)));
 			System.out.println("Best of run:	"+spongeArray[popSize-1].geneticScore);
 			System.out.println("Projected remaining runtime: "+ghm.millisToTimestamp((long)(endTime-startTime)*(generationCount-generation)));
-			ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, mutationChance);
+			ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, mutationChance, preserveTopNIndividuals);
 			
 			
 			

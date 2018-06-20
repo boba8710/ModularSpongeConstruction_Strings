@@ -87,7 +87,7 @@ public class GeneticHelperMethods {
 		child = mutateRoundFunction(child, mutationChance);
 		return child;
 	}
-	public void runGenerationOnSortedPopulation(SpongeConstruction_Strings[] population, double populationDieOffPercent, double mutationChance) {
+	public void runGenerationOnSortedPopulation(SpongeConstruction_Strings[] population, double populationDieOffPercent, double mutationChance, double preserveTopNIndividuals) {
 		SpongeConstruction_Strings[] newPopulation = new SpongeConstruction_Strings[population.length];
 		SpongeConstruction_Strings[] topIndividuals = new SpongeConstruction_Strings[(int) (population.length-(population.length*(populationDieOffPercent)))]; //The population preserved will be 1-dieoff
 		for(int i = population.length-1; i >= (int) (population.length*populationDieOffPercent);i--) { //populate top individuals array
@@ -103,7 +103,9 @@ public class GeneticHelperMethods {
 			}
 		}
 		for(int i = 0; i <  population.length; i++){
-			population[i]=newPopulation[i];
+			if(!(i > population.length-preserveTopNIndividuals)){
+				population[i]=newPopulation[i];
+			}
 		}
 	}
 	public void sortPopulationArray(SpongeConstruction_Strings[] population) {
