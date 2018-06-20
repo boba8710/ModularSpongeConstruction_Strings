@@ -12,7 +12,7 @@ public class MSC_S_MAIN {
 		int popSize = 128;
 		int messageCount = 4096;
 		int messageLenBytes = 16;
-		int funcCount = 10;
+		int funcCount = 25;
 		int stateSize = 1600;
 		int rate = 300;
 		int capacity = 1600-rate;

@@ -12,8 +12,11 @@ public class RandomFunctionBuilder {
 	}
 	public String genRandOperation() { //used during mutations
 		Random rand = new Random();
-		String paramString = "";
 		HashOperation selected = operations[rand.nextInt(operations.length)];
+		String paramString = selected.getId();
+		if(selected.getId() == "NOP"){
+			return paramString;
+		}
 		if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 			int r, s;
 			while(true) {
@@ -51,6 +54,9 @@ public class RandomFunctionBuilder {
 		for(int functionCount = 0; functionCount < funcCount; functionCount++) {
 			HashOperation selected = operations[rand.nextInt(operations.length)];
 			String paramString = selected.getId();
+			if(selected.getId() == "NOP"){
+				return paramString;
+			}
 			if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 				int r, s;
 				while(true) {
