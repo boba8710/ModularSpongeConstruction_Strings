@@ -106,4 +106,26 @@ public class GeneticHelperMethods {
 	public void sortPopulationArray(SpongeConstruction_Strings[] population) {
 		Quicksort.quickSort(population, 0, population.length-1);
 	}
+	
+	//Credit for the majority of this method goes to mkyong (www.mkyong.com)
+	public String millisToTimestamp(long milliseconds){
+		long secondsInMilli = 1000;
+		long minutesInMilli = secondsInMilli * 60;
+		long hoursInMilli = minutesInMilli * 60;
+		long daysInMilli = hoursInMilli * 24;
+
+		long elapsedDays = milliseconds / daysInMilli;
+		milliseconds = milliseconds % daysInMilli;
+		
+		long elapsedHours = milliseconds / hoursInMilli;
+		milliseconds = milliseconds % hoursInMilli;
+		
+		long elapsedMinutes = milliseconds / minutesInMilli;
+		milliseconds = milliseconds % minutesInMilli;
+		
+		long elapsedSeconds = milliseconds / secondsInMilli;
+		
+		milliseconds =milliseconds - elapsedSeconds*secondsInMilli;
+		return elapsedDays+":"+elapsedHours+":"+elapsedMinutes+":"+elapsedSeconds+"."+milliseconds;
+	}
 }

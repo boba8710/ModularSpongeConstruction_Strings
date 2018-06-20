@@ -1,5 +1,7 @@
 package main;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Date;
 
 public class MSC_S_MAIN {
@@ -15,7 +17,7 @@ public class MSC_S_MAIN {
 		int capacity = 1600-rate;
 		double populationDieOffPercent = 0.50; //A higher value is more selective and less diverse, a lower value is the opposite
 		double mutationChance = 0.50;	//A higher value will increase the chance of random mutation in offspring
-		
+		int generationCount = 200;
 		
 		//RANDOM GENERATION OF INITIAL POPULATION
 		RandomFunctionBuilder functionBuilder = new RandomFunctionBuilder(funcCount);
@@ -41,7 +43,9 @@ public class MSC_S_MAIN {
 		
 		
 		//Run GA
-		for(int generation= 0; generation < 100; generation++) {
+		Date runStart = new Date();
+		long runStartTime = runStart.getTime();
+		for(int generation= 0; generation < generationCount; generation++) {
 			Date dateStart = new Date();
 			long startTime = dateStart.getTime();
 			for(int i = 0; i < popSize; i++) {
@@ -65,9 +69,33 @@ public class MSC_S_MAIN {
 			Date dateEnd = new Date();
 			long endTime = dateEnd.getTime();
 			System.out.println("Generation	"+generation+"	completed.");
-			System.out.println("Generation runtime: "+(((double)(endTime-startTime)/(double)60000)+"m"));
+			System.out.println("Generation runtime: "+ghm.millisToTimestamp(endTime-startTime));
+			System.out.println("Average individual runtime:	"+ghm.millisToTimestamp((long)((endTime-startTime)/popSize)));
 			System.out.println("Best of run:	"+spongeArray[popSize-1].geneticScore);
 		}
+		
+		Date runEnd = new Date();
+		FileWriter finalPopulationData;
+		try {
+			 finalPopulationData = new FileWriter("FinalRunData"+runEnd.toString()+".log");
+			for(int i = 0; i < popSize; i++){
+				finalPopulationData.write(Integer.toString(i)+"	:\n");
+				finalPopulationData.write("Fitness Score:	"+spongeArray[i].geneticScore+"\n");
+				finalPopulationData.write("Round Function:\n");
+				finalPopulationData.write(spongeArray[i].f.getFunc()+"\n");
+				finalPopulationData.write("=================================================================\n");
+				
+			}
+			System.out.println("File output succeeded, output saved to "+"FinalRunData"+runEnd.toString()+".log");
+			finalPopulationData.close();
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			System.out.println("File output failed.");
+			e1.printStackTrace();
+		}
+		
+		long runEndTime = runEnd.getTime();
+		System.out.println("Run completed. Run time elapsed: "+ghm.millisToTimestamp(runEndTime-runStartTime));
 		
 		
 		
