@@ -1,5 +1,6 @@
 package main;
 
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Date;
@@ -8,15 +9,15 @@ public class MSC_S_MAIN {
 	public static void main(String[] args) {
 		
 		//CONFIGURATION
-		int popSize = 128;
+		int popSize = 512;
 		int messageCount = 8196;
-		int messageLenBytes = 64;
-		int funcCount = 10;
+		int messageLenBytes = 16;
+		int funcCount = 40;
 		int stateSize = 1600;
 		int rate = 300;
 		int capacity = 1600-rate;
 		double populationDieOffPercent = 0.50; //A higher value is more selective and less diverse, a lower value is the opposite
-		double mutationChance = 0.50;	//A higher value will increase the chance of random mutation in offspring
+		double mutationChance = 0.75;	//A higher value will increase the chance of random mutation in offspring
 		int generationCount = 200;
 		
 		//RANDOM GENERATION OF INITIAL POPULATION
@@ -72,12 +73,16 @@ public class MSC_S_MAIN {
 			System.out.println("Generation runtime: "+ghm.millisToTimestamp(endTime-startTime));
 			System.out.println("Average individual runtime:	"+ghm.millisToTimestamp((long)((endTime-startTime)/popSize)));
 			System.out.println("Best of run:	"+spongeArray[popSize-1].geneticScore);
+			System.out.println("Projected remaining runtime: "+ghm.millisToTimestamp((long)(endTime-startTime)*(generationCount-generation)));
 		}
 		
 		Date runEnd = new Date();
+		
 		FileWriter finalPopulationData;
 		try {
-			 finalPopulationData = new FileWriter("FinalRunData"+runEnd.toString()+".log");
+			File outputFile = new File("FinalRunData"+runEnd.toString()+".log");
+			outputFile.createNewFile();
+			 finalPopulationData = new FileWriter(outputFile);
 			for(int i = 0; i < popSize; i++){
 				finalPopulationData.write(Integer.toString(i)+"	:\n");
 				finalPopulationData.write("Fitness Score:	"+spongeArray[i].geneticScore+"\n");

@@ -125,7 +125,7 @@ public class GeneticHelperMethods {
 		
 		long elapsedSeconds = milliseconds / secondsInMilli;
 		
-		milliseconds =milliseconds - elapsedSeconds*secondsInMilli;
+		milliseconds = milliseconds - elapsedSeconds*secondsInMilli;
 		return elapsedDays+":"+elapsedHours+":"+elapsedMinutes+":"+elapsedSeconds+"."+milliseconds;
 	}
 }
