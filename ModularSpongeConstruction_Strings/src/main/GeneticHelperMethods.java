@@ -95,12 +95,15 @@ public class GeneticHelperMethods {
 		}
 		int iterator = 0; 	//breed enough times to fill the population
 							//each iteration of breeding, the second parent shifts up one more index, i.e. 1+2,3+4,5+6 one generation becomes 1+3, 3+5 etc etc
-		for(int breedingIteration = 0 ; breedingIteration < 1/1-(populationDieOffPercent); breedingIteration++) {
+		for(int breedingIteration = 0 ; iterator < population.length; breedingIteration++) {
 			for(int i = topIndividuals.length-2; i >= 0; i-=2) {
 				//System.out.println(iterator+":");
 				newPopulation[iterator] = new SpongeConstruction_Strings(SpongeConstruction_Strings.stateSize, SpongeConstruction_Strings.rate, SpongeConstruction_Strings.capacity, new ModularRoundFunction(SpongeConstruction_Strings.stateSize, crossoverRoundFunction(topIndividuals[i].f.getFunc(),topIndividuals[(i+1+breedingIteration)%topIndividuals.length].f.getFunc(), mutationChance)));
 				iterator++;
 			}
+		}
+		for(int i = 0; i <  population.length; i++){
+			population[i]=newPopulation[i];
 		}
 	}
 	public void sortPopulationArray(SpongeConstruction_Strings[] population) {

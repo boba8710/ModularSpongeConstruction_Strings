@@ -9,15 +9,15 @@ public class MSC_S_MAIN {
 	public static void main(String[] args) {
 		
 		//CONFIGURATION
-		int popSize = 512;
-		int messageCount = 8196;
+		int popSize = 128;
+		int messageCount = 4096;
 		int messageLenBytes = 16;
-		int funcCount = 40;
+		int funcCount = 10;
 		int stateSize = 1600;
 		int rate = 300;
 		int capacity = 1600-rate;
 		double populationDieOffPercent = 0.50; //A higher value is more selective and less diverse, a lower value is the opposite
-		double mutationChance = 0.75;	//A higher value will increase the chance of random mutation in offspring
+		double mutationChance = 0.25;	//A higher value will increase the chance of random mutation in offspring
 		int generationCount = 200;
 		
 		//RANDOM GENERATION OF INITIAL POPULATION
@@ -66,7 +66,6 @@ public class MSC_S_MAIN {
 				//System.out.println(i+"	:	"+scoreTable[i]);
 			}
 			ghm.sortPopulationArray(spongeArray);
-			ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, mutationChance);
 			Date dateEnd = new Date();
 			long endTime = dateEnd.getTime();
 			System.out.println("Generation	"+generation+"	completed.");
@@ -74,6 +73,10 @@ public class MSC_S_MAIN {
 			System.out.println("Average individual runtime:	"+ghm.millisToTimestamp((long)((endTime-startTime)/popSize)));
 			System.out.println("Best of run:	"+spongeArray[popSize-1].geneticScore);
 			System.out.println("Projected remaining runtime: "+ghm.millisToTimestamp((long)(endTime-startTime)*(generationCount-generation)));
+			ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, mutationChance);
+			
+			
+			
 		}
 		
 		Date runEnd = new Date();
@@ -94,7 +97,6 @@ public class MSC_S_MAIN {
 			System.out.println("File output succeeded, output saved to "+"FinalRunData"+runEnd.toString()+".log");
 			finalPopulationData.close();
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			System.out.println("File output failed.");
 			e1.printStackTrace();
 		}
