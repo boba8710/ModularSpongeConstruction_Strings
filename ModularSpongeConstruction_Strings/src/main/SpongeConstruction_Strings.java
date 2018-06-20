@@ -30,12 +30,14 @@ class SpongeConstruction_Strings{
 	@SuppressWarnings("static-access")
 	SpongeConstruction_Strings(int stateSize, int rate, int capacity, RoundFunction f){
 		assert rate+capacity==stateSize;
+		/*
 		System.out.println("Instanitating sponge function with:");
 		System.out.println("	StateSize=	"+stateSize);
 		System.out.println("	     Rate=	"+rate);
 		System.out.println("	 Capacity=	"+capacity);
 		System.out.println("Using Round Function : ");
 		System.out.println("	"+f.getFunc());
+		*/
 		this.stateSize = stateSize;
 		this.f= f;
 		state = new char[stateSize];
