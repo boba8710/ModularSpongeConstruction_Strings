@@ -9,17 +9,17 @@ public class MSC_S_MAIN {
 	public static void main(String[] args) {
 		
 		//CONFIGURATION
-		int popSize = 128;
-		int messageCount = 4096;
+		int popSize = 64;
+		int messageCount = 8192;
 		int messageLenBytes = 16;
 		int funcCount = 25;
 		int stateSize = 1600;
 		int rate = 300;
 		int capacity = 1600-rate;
 		double populationDieOffPercent = 0.50; //A higher value is more selective and less diverse, a lower value is the opposite
-		double mutationChance = 0.25;	//A higher value will increase the chance of random mutation in offspring
+		double mutationChance = 0.75;	//A higher value will increase the chance of random mutation in offspring
 		int preserveTopNIndividuals = 8;
-		int generationCount = 200;
+		int generationCount = 100;
 		
 		//RANDOM GENERATION OF INITIAL POPULATION
 		RandomFunctionBuilder functionBuilder = new RandomFunctionBuilder(funcCount);
@@ -43,7 +43,7 @@ public class MSC_S_MAIN {
 			messagesFlipped[i]=ghm.flipRand(messages[i]);
 		}
 		
-		
+		double[] topScores = new double[generationCount];
 		//Run GA
 		Date runStart = new Date();
 		long runStartTime = runStart.getTime();
@@ -72,7 +72,8 @@ public class MSC_S_MAIN {
 			System.out.println("Generation	"+generation+"	completed.");
 			System.out.println("Generation runtime: "+ghm.millisToTimestamp(endTime-startTime));
 			System.out.println("Average individual runtime:	"+ghm.millisToTimestamp((long)((endTime-startTime)/popSize)));
-			System.out.println("Best of run:	"+spongeArray[popSize-1].geneticScore);
+			System.out.println("Best of gen:	"+spongeArray[popSize-1].geneticScore);
+			topScores[generation] = spongeArray[popSize-1].geneticScore;
 			System.out.println("Projected remaining runtime: "+ghm.millisToTimestamp((long)(endTime-startTime)*(generationCount-generation)));
 			ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, mutationChance, preserveTopNIndividuals);
 			
@@ -80,23 +81,31 @@ public class MSC_S_MAIN {
 			
 		}
 		
-		Date runEnd = new Date();
 		
-		FileWriter finalPopulationData;
+		//Output run data
+		Date runEnd = new Date();
+		FileWriter finalPopulationWriter, dataWriter;
 		try {
-			File outputFile = new File("FinalRunData"+runEnd.toString()+".log");
+			File outputFile = new File("FinalRunPopulation"+runEnd.toString()+".log");
 			outputFile.createNewFile();
-			 finalPopulationData = new FileWriter(outputFile);
+			finalPopulationWriter = new FileWriter(outputFile);
+			File csvFile = new File("RunData"+runEnd.toString()+".csv");
+			dataWriter = new FileWriter(csvFile);
+					
 			for(int i = 0; i < popSize; i++){
-				finalPopulationData.write(Integer.toString(i)+"	:\n");
-				finalPopulationData.write("Fitness Score:	"+spongeArray[i].geneticScore+"\n");
-				finalPopulationData.write("Round Function:\n");
-				finalPopulationData.write(spongeArray[i].f.getFunc()+"\n");
-				finalPopulationData.write("=================================================================\n");
-				
+				finalPopulationWriter.write(Integer.toString(i)+"	:\n");
+				finalPopulationWriter.write("Fitness Score:	"+spongeArray[i].geneticScore+"\n");
+				finalPopulationWriter.write("Round Function:\n");
+				finalPopulationWriter.write(spongeArray[i].f.getFunc()+"\n");
+				finalPopulationWriter.write("=================================================================\n\n");
 			}
-			System.out.println("File output succeeded, output saved to "+"FinalRunData"+runEnd.toString()+".log");
-			finalPopulationData.close();
+			for(int i = 0; i < generationCount; i++) {
+				dataWriter.write(i+","+topScores[i]+"\n");
+			}
+			
+			System.out.println("File output succeeded, output saved to "+"FinalRunPopulation"+runEnd.toString()+".log"+" and "+"RunData"+runEnd.toString()+".csv");
+			finalPopulationWriter.close();
+			dataWriter.close();
 		} catch (IOException e1) {
 			System.out.println("File output failed.");
 			e1.printStackTrace();
