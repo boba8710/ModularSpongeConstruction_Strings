@@ -7,6 +7,7 @@ class SpongeConstruction_Strings{
 	static int stateSize;
 	static char[] iv;
 	public double geneticScore;
+	public double bitchangeScore;
 	RoundFunction f;
 	@SuppressWarnings("static-access")
 	SpongeConstruction_Strings(int stateSize, int rate, int capacity){

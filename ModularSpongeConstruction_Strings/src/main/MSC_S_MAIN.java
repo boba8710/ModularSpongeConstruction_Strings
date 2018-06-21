@@ -69,6 +69,7 @@ public class MSC_S_MAIN {
 		}
 		System.out.println("Population ready, running generations...");
 		double[] topScores = new double[generationCount];
+		double[] topBitchange = new double[generationCount];
 		
 		
 		
@@ -89,6 +90,7 @@ public class MSC_S_MAIN {
 					spongeArray[i].spongePurge();
 					score+=ghm.bitchange(h1,h2);
 				}
+				spongeArray[i].bitchangeScore = score/(double)messageCount;
 				spongeArray[i].geneticScore=1/Math.abs(0.5-(score/(double)messageCount));
 				scoreTable[i] = 1/Math.abs(0.5-(score/(double)messageCount));
 				System.out.printf("%.3f%s\n",(double)i*100/(double)popSize,"%");
@@ -102,6 +104,7 @@ public class MSC_S_MAIN {
 			System.out.println("Best of gen:	"+spongeArray[popSize-1].geneticScore);
 			System.out.println("Max bitchange(+/-):	"+(0.50-(1/spongeArray[popSize-1].geneticScore)));
 			topScores[generation] = spongeArray[popSize-1].geneticScore;
+			topBitchange[generation] = spongeArray[popSize-1].bitchangeScore;
 			System.out.println("Projected remaining runtime: "+ghm.millisToTimestamp((long)(endTime-startTime)*(generationCount-generation)));
 			ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, mutationChance, preserveTopNIndividuals);
 			
@@ -126,12 +129,11 @@ public class MSC_S_MAIN {
 			System.out.printf("%.3f%s\n",(double)i*100/(double)popSize,"%");
 		}
 		ghm.sortPopulationArray(spongeArray);
-		Date dateEnd = new Date();
-		long endTime = dateEnd.getTime();
 		System.out.println("Generation	"+(generationCount-1)+"	completed.");
 		System.out.println("Best of gen:	"+spongeArray[popSize-1].geneticScore);
-		System.out.println("Max bitchange(+/-):	"+(0.50-(1/spongeArray[popSize-1].geneticScore)));
+		System.out.println("Max bitchange:	"+(spongeArray[popSize-1].bitchangeScore));
 		topScores[generationCount-1] = spongeArray[popSize-1].geneticScore;
+		topBitchange[generationCount-1] = spongeArray[popSize-1].bitchangeScore;
 		
 		
 		//Output run data
@@ -154,13 +156,13 @@ public class MSC_S_MAIN {
 			for(int i = 0; i < popSize; i++){
 				finalPopulationWriter.print(Integer.toString(i)+"	:\n");
 				finalPopulationWriter.print("Fitness Score:	"+spongeArray[i].geneticScore+"\n");
-				finalPopulationWriter.print("Bitchange (+/-)"+(0.50-(1/spongeArray[i].geneticScore)));
+				finalPopulationWriter.print("Bitchange:	"+(spongeArray[i].bitchangeScore));
 				finalPopulationWriter.print("Round Function:\n");
 				finalPopulationWriter.print(spongeArray[i].f.getFunc()+"\n");
 				finalPopulationWriter.print("=================================================================\n\n");
 			}
 			for(int i = 0; i < generationCount; i++) {
-				dataWriter.print(i+","+topScores[i]+"\n");
+				dataWriter.print(i+","+topScores[i]+","+topBitchange[i]+"\n");
 			}
 			
 			System.out.println("File output succeeded, output saved to "+"FinalRunPopulation"+runEnd.getTime()+".log"+" and "+"RunData"+runEnd.getTime()+".csv");
