@@ -109,8 +109,8 @@ public class MSC_S_MAIN {
 		//Output run data
 		Date runEnd = new Date();
 		try {
-			PrintWriter finalPopulationWriter = new PrintWriter("FinalRunPopulation"+runEnd.toString()+".log");
-			PrintWriter dataWriter = new PrintWriter("RunData"+runEnd.toString()+".csv");
+			PrintWriter finalPopulationWriter = new PrintWriter("FinalRunPopulation"+runEnd.getTime()+".log");
+			PrintWriter dataWriter = new PrintWriter("RunData"+runEnd.getTime()+".csv");
 			finalPopulationWriter.println("Parameters:");
 			finalPopulationWriter.println("popSize: "+popSize);
 			finalPopulationWriter.println("messageCount: "+messageCount);
@@ -134,7 +134,7 @@ public class MSC_S_MAIN {
 				dataWriter.print(i+","+topScores[i]+"\n");
 			}
 			
-			System.out.println("File output succeeded, output saved to "+"FinalRunPopulation"+runEnd.toString()+".log"+" and "+"RunData"+runEnd.toString()+".csv");
+			System.out.println("File output succeeded, output saved to "+"FinalRunPopulation"+runEnd.getTime()+".log"+" and "+"RunData"+runEnd.getTime()+".csv");
 			finalPopulationWriter.close();
 			dataWriter.close();
 		} catch (IOException e1) {
