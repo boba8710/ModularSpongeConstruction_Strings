@@ -69,10 +69,13 @@ public class MSC_S_MAIN {
 		}
 		System.out.println("Population ready, running generations...");
 		double[] topScores = new double[generationCount];
+		
+		
+		
 		//Run GA
 		Date runStart = new Date();
 		long runStartTime = runStart.getTime();
-		for(int generation= 0; generation < generationCount; generation++) {
+		for(int generation= 0; generation < generationCount-1; generation++) {
 			Date dateStart = new Date();
 			long startTime = dateStart.getTime();
 			for(int i = 0; i < popSize; i++) {
@@ -86,8 +89,8 @@ public class MSC_S_MAIN {
 					spongeArray[i].spongePurge();
 					score+=ghm.bitchange(h1,h2);
 				}
-				spongeArray[i].geneticScore=score/(double)messageCount;
-				scoreTable[i] = score/(double)messageCount;
+				spongeArray[i].geneticScore=1/Math.abs(0.5-(score/(double)messageCount));
+				scoreTable[i] = 1/Math.abs(0.5-(score/(double)messageCount));
 				System.out.printf("%.3f%s\n",(double)i*100/(double)popSize,"%");
 			}
 			ghm.sortPopulationArray(spongeArray);
@@ -97,6 +100,7 @@ public class MSC_S_MAIN {
 			System.out.println("Generation runtime: "+ghm.millisToTimestamp(endTime-startTime));
 			System.out.println("Average individual runtime:	"+ghm.millisToTimestamp((long)((endTime-startTime)/popSize)));
 			System.out.println("Best of gen:	"+spongeArray[popSize-1].geneticScore);
+			System.out.println("Max bitchange(+/-):	"+(0.50-(1/spongeArray[popSize-1].geneticScore)));
 			topScores[generation] = spongeArray[popSize-1].geneticScore;
 			System.out.println("Projected remaining runtime: "+ghm.millisToTimestamp((long)(endTime-startTime)*(generationCount-generation)));
 			ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, mutationChance, preserveTopNIndividuals);
@@ -104,6 +108,30 @@ public class MSC_S_MAIN {
 			
 			
 		}
+		
+		//Score the last generation
+		for(int i = 0; i < popSize; i++) {
+			double score = 0;
+			for(int j = 0; j < messages.length; j++) {
+				spongeArray[i].spongeAbsorb(messages[j]);
+				String h1 = spongeArray[i].spongeSqueeze(1);
+				spongeArray[i].spongePurge();
+				spongeArray[i].spongeAbsorb(messagesFlipped[j]);
+				String h2 = spongeArray[i].spongeSqueeze(1);
+				spongeArray[i].spongePurge();
+				score+=ghm.bitchange(h1,h2);
+			}
+			spongeArray[i].geneticScore=1/Math.abs(0.5-(score/(double)messageCount));
+			scoreTable[i] = 1/Math.abs(0.5-(score/(double)messageCount));
+			System.out.printf("%.3f%s\n",(double)i*100/(double)popSize,"%");
+		}
+		ghm.sortPopulationArray(spongeArray);
+		Date dateEnd = new Date();
+		long endTime = dateEnd.getTime();
+		System.out.println("Generation	"+(generationCount-1)+"	completed.");
+		System.out.println("Best of gen:	"+spongeArray[popSize-1].geneticScore);
+		System.out.println("Max bitchange(+/-):	"+(0.50-(1/spongeArray[popSize-1].geneticScore)));
+		topScores[generationCount-1] = spongeArray[popSize-1].geneticScore;
 		
 		
 		//Output run data
@@ -126,6 +154,7 @@ public class MSC_S_MAIN {
 			for(int i = 0; i < popSize; i++){
 				finalPopulationWriter.print(Integer.toString(i)+"	:\n");
 				finalPopulationWriter.print("Fitness Score:	"+spongeArray[i].geneticScore+"\n");
+				finalPopulationWriter.print("Bitchange (+/-)"+(0.50-(1/spongeArray[i].geneticScore)));
 				finalPopulationWriter.print("Round Function:\n");
 				finalPopulationWriter.print(spongeArray[i].f.getFunc()+"\n");
 				finalPopulationWriter.print("=================================================================\n\n");
