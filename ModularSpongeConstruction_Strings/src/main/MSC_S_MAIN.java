@@ -4,8 +4,10 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class MSC_S_MAIN {
 	public static void main(String[] args) {
@@ -62,7 +64,6 @@ public class MSC_S_MAIN {
 		SpongeConstruction_Strings[] spongeArrayReserve = new SpongeConstruction_Strings[popSize];
 		String[] messages = new String[messageCount];
 		String[] messagesFlipped = new String[messageCount];
-		double[] scoreTable = new double[popSize];
 		for(int i = 0; i < functionPop.length; i++) {
 			//System.out.println(i+":");
 			functionStringPop[i] = functionBuilder.genFuncString();
@@ -136,22 +137,7 @@ public class MSC_S_MAIN {
 		for(int generation= 0; generation < generationCount-1; generation++) {
 			Date dateStart = new Date();
 			long startTime = dateStart.getTime();
-			for(int i = 0; i < popSize; i++) {
-				double score = 0;
-				for(int j = 0; j < messages.length; j++) {
-					spongeArray[i].spongeAbsorb(messages[j]);
-					String h1 = spongeArray[i].spongeSqueeze(1);
-					spongeArray[i].spongePurge();
-					spongeArray[i].spongeAbsorb(messagesFlipped[j]);
-					String h2 = spongeArray[i].spongeSqueeze(1);
-					spongeArray[i].spongePurge();
-					score+=ghm.bitchange(h1,h2);
-				}
-				spongeArray[i].bitchangeScore = score/(double)messageCount;
-				spongeArray[i].geneticScore=1/Math.abs(0.5-(score/(double)messageCount));
-				scoreTable[i] = 1/Math.abs(0.5-(score/(double)messageCount));
-				System.out.printf("%.3f%s\n",(double)i*100/(double)popSize,"%");
-			}
+			ghm.multithreadScore(spongeArray, messages, messagesFlipped, popSize, messageCount);
 			ghm.sortPopulationArray(spongeArray);
 			Date dateEnd = new Date();
 			long endTime = dateEnd.getTime();
@@ -174,24 +160,8 @@ public class MSC_S_MAIN {
 			}
 			
 		}
-		
 		//Score the last generation
-		for(int i = 0; i < popSize; i++) {
-			double score = 0;
-			for(int j = 0; j < messages.length; j++) {
-				spongeArray[i].spongeAbsorb(messages[j]);
-				String h1 = spongeArray[i].spongeSqueeze(1);
-				spongeArray[i].spongePurge();
-				spongeArray[i].spongeAbsorb(messagesFlipped[j]);
-				String h2 = spongeArray[i].spongeSqueeze(1);
-				spongeArray[i].spongePurge();
-				score+=ghm.bitchange(h1,h2);
-			}
-			spongeArray[i].bitchangeScore = score/(double)messageCount;
-			spongeArray[i].geneticScore=1/Math.abs(0.5-(score/(double)messageCount));
-			scoreTable[i] = 1/Math.abs(0.5-(score/(double)messageCount));
-			System.out.printf("%.3f%s\n",(double)i*100/(double)popSize,"%");
-		}
+		ghm.multithreadScore(spongeArray, messages, messagesFlipped, popSize, messageCount);
 		ghm.sortPopulationArray(spongeArray);
 		System.out.println("Generation	"+(generationCount-1)+"	completed.");
 		System.out.println("Best of gen:	"+spongeArray[popSize-1].geneticScore);

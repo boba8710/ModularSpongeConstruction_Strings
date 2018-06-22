@@ -1,8 +1,13 @@
 package main;
 import org.apache.commons.math3.random.MersenneTwister;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 public class GeneticHelperMethods {
 	static Random rand = new Random();
 	public String generateMersenneRandomString(int len, int seed) {
@@ -132,5 +137,54 @@ public class GeneticHelperMethods {
 		
 		milliseconds = milliseconds - elapsedSeconds*secondsInMilli;
 		return elapsedDays+":"+elapsedHours+":"+elapsedMinutes+":"+elapsedSeconds+"."+milliseconds;
+	}
+	
+	public void score(SpongeConstruction_Strings[] spongeArray, String[] messages, String[] messagesFlipped, int popSize, int messageCount) {
+		for(int i = 0; i < popSize; i++) {
+			double score = 0;
+			for(int j = 0; j < messages.length; j++) {
+				spongeArray[i].spongeAbsorb(messages[j]);
+				String h1 = spongeArray[i].spongeSqueeze(1);
+				spongeArray[i].spongePurge();
+				spongeArray[i].spongeAbsorb(messagesFlipped[j]);
+				String h2 = spongeArray[i].spongeSqueeze(1);
+				spongeArray[i].spongePurge();
+				score+=bitchange(h1,h2);
+			}
+			spongeArray[i].bitchangeScore = score/(double)messageCount;
+			spongeArray[i].geneticScore=1/Math.abs(0.5-(score/(double)messageCount));
+			System.out.printf("%.3f%s\n",(double)i*100/(double)popSize,"%");
+		}
+	}
+	public void scoreSingle(SpongeConstruction_Strings sponge, String[] messages, String[] messagesFlipped, int popSize, int messageCount) {
+			double score = 0;
+			for(int j = 0; j < messages.length; j++) {
+			sponge.spongeAbsorb(messages[j]);
+			String h1 = sponge.spongeSqueeze(1);
+			sponge.spongePurge();
+			sponge.spongeAbsorb(messagesFlipped[j]);
+			String h2 = sponge.spongeSqueeze(1);
+			sponge.spongePurge();
+			score+=bitchange(h1,h2);
+			sponge.bitchangeScore = score/(double)messageCount;
+			sponge.geneticScore=1/Math.abs(0.5-(score/(double)messageCount));
+		}
+	}
+	public void multithreadScore(SpongeConstruction_Strings[] spongeArray, String[] messages, String[] messagesFlipped, int popSize, int messageCount) {
+		final ExecutorService executor = Executors.newFixedThreadPool(popSize);
+		final List<Future<?>> futures = new ArrayList<>();
+		for(SpongeConstruction_Strings sponge : spongeArray) {
+			Future<?> future = executor.submit(() -> {
+				scoreSingle(sponge, messages, messagesFlipped, popSize, messageCount);
+			});
+			futures.add(future);
+		}
+		try {
+	        for (Future<?> future : futures) {
+	            future.get();
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
 	}
 }

@@ -1,7 +1,7 @@
 package main;
 class SpongeConstruction_Strings{
 	
-	static char[] state;
+	char[] state;
 	static int rate;
 	static int capacity;
 	static int stateSize;
@@ -68,7 +68,7 @@ class SpongeConstruction_Strings{
 		this.rate = rate;
 		this.capacity = capacity;
 	}
-	private static void xorIntoState(char[] messageRateChunk) {
+	private void xorIntoState(char[] messageRateChunk) {
 		for(int i = 0; i < rate; i++) {
 			state[i] = BSF.xor(state[i],messageRateChunk[i]);
 		}
