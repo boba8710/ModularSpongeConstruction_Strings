@@ -44,6 +44,7 @@ public class MSC_S_MAIN {
 		final double bitchangeLowerBoundAutostop = 0.49;
 		final double bitchangeUpperBoundAutostop = 0.54;
 		final int popSize = _popSize;
+		final int aggressiveThreshold = 35;
 		final int messageCount = 8192;
 		final int messageLenBytes = 16;
 		final int funcCount = _funcCount;
@@ -55,7 +56,7 @@ public class MSC_S_MAIN {
 		final int preserveTopNIndividuals = _preserveTopNIndividuals;
 		final int generationCount = _generationCount;
 		boolean aggressiveMode = false;
-		double[] lastTenScores = new double[10];
+		double[] lastScores = new double[aggressiveThreshold];
 		int lastTenIterator=0;
 		
 		//RANDOM GENERATION OF INITIAL POPULATION
@@ -144,13 +145,13 @@ public class MSC_S_MAIN {
 			for(int i = 0 ; i < popSize; i++) {
 				spongeArrayReserve[i] = spongeArray[i];
 			}
-			lastTenScores[generation%9] = (0.50-(1/spongeArray[popSize-1].geneticScore));
-			if(generation >= 9) {
+			lastScores[generation%9] = (0.50-(1/spongeArray[popSize-1].geneticScore));
+			if(generation >= aggressiveThreshold) {
 				double scoreProd = 1;
-				for(double score : lastTenScores) {
+				for(double score : lastScores) {
 					scoreProd*=score;
 				}
-				if(lastTenScores[0]*10==scoreProd) {
+				if(lastScores[0]*aggressiveThreshold==scoreProd) {
 					aggressiveMode = true;
 				}else {
 					aggressiveMode = false;
