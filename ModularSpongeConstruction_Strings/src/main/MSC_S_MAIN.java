@@ -153,8 +153,10 @@ public class MSC_S_MAIN {
 				}
 				if(lastScores[0]*aggressiveThreshold==scoreProd) {
 					aggressiveMode = true;
+					System.out.println("!!!AGGRESSIVE GROWTH ENGAGED!!!");
 				}else {
 					aggressiveMode = false;
+					System.out.println("!!!AGGRESSIVE GROWTH DISENGAGED!!!");
 				}
 			}
 			Date dateEnd = new Date();
