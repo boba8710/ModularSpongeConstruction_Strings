@@ -37,6 +37,9 @@ public class MSC_S_MAIN {
 				System.out.print("\ngenerationCount=");
 				_generationCount = s.nextInt();
 				s.close();
+			}else if(args[0].equals("-t")){
+				testFunction(args[1]);
+				return;
 			}
 		}catch(Exception e) {
 			
