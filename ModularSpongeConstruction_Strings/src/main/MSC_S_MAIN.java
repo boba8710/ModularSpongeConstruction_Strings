@@ -54,7 +54,9 @@ public class MSC_S_MAIN {
 		final double mutationChance = _mutationChance;	//A higher value will increase the chance of random mutation in offspring
 		final int preserveTopNIndividuals = _preserveTopNIndividuals;
 		final int generationCount = _generationCount;
-		
+		boolean aggressiveMode = false;
+		double[] lastTenScores = new double[10];
+		int lastTenIterator=0;
 		
 		//RANDOM GENERATION OF INITIAL POPULATION
 		RandomFunctionBuilder functionBuilder = new RandomFunctionBuilder(funcCount);
@@ -139,6 +141,21 @@ public class MSC_S_MAIN {
 			long startTime = dateStart.getTime();
 			ghm.multithreadScore(spongeArray, messages, messagesFlipped, popSize, messageCount);
 			ghm.sortPopulationArray(spongeArray);
+			for(int i = 0 ; i < popSize; i++) {
+				spongeArrayReserve[i] = spongeArray[i];
+			}
+			lastTenScores[generation%9] = (0.50-(1/spongeArray[popSize-1].geneticScore));
+			if(generation >= 9) {
+				double scoreProd = 1;
+				for(double score : lastTenScores) {
+					scoreProd*=score;
+				}
+				if(lastTenScores[0]*10==scoreProd) {
+					aggressiveMode = true;
+				}else {
+					aggressiveMode = false;
+				}
+			}
 			Date dateEnd = new Date();
 			long endTime = dateEnd.getTime();
 			System.out.println("Generation	"+generation+"	completed.");
@@ -149,8 +166,11 @@ public class MSC_S_MAIN {
 			topScores[generation] = spongeArray[popSize-1].geneticScore;
 			topBitchange[generation] = spongeArray[popSize-1].bitchangeScore;
 			System.out.println("Projected remaining runtime: "+ghm.millisToTimestamp((long)(endTime-startTime)*(generationCount-generation)));
-			for(int i = 0 ; i < popSize; i++) {
-				spongeArrayReserve[i] = spongeArray[i];
+			if(aggressiveMode) {
+				ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, 0.90, 1);
+				
+			}else {
+				ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, mutationChance, preserveTopNIndividuals);
 			}
 			ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, mutationChance, preserveTopNIndividuals);
 			
