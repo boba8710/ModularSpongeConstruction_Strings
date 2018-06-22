@@ -159,19 +159,20 @@ public class GeneticHelperMethods {
 	public void scoreSingle(SpongeConstruction_Strings sponge, String[] messages, String[] messagesFlipped, int popSize, int messageCount) {
 			double score = 0;
 			for(int j = 0; j < messages.length; j++) {
-			sponge.spongeAbsorb(messages[j]);
-			String h1 = sponge.spongeSqueeze(1);
-			sponge.spongePurge();
-			sponge.spongeAbsorb(messagesFlipped[j]);
-			String h2 = sponge.spongeSqueeze(1);
-			sponge.spongePurge();
-			score+=bitchange(h1,h2);
-			sponge.bitchangeScore = score/(double)messageCount;
-			sponge.geneticScore=1/Math.abs(0.5-(score/(double)messageCount));
-		}
+				sponge.spongeAbsorb(messages[j]);
+				String h1 = sponge.spongeSqueeze(1);
+				sponge.spongePurge();
+				sponge.spongeAbsorb(messagesFlipped[j]);
+				String h2 = sponge.spongeSqueeze(1);
+				sponge.spongePurge();
+				score+=bitchange(h1,h2);
+				sponge.bitchangeScore = score/(double)messageCount;
+				sponge.geneticScore=1/Math.abs(0.5-(score/(double)messageCount));
+			}
+			System.out.print("|");
 	}
 	public void multithreadScore(SpongeConstruction_Strings[] spongeArray, String[] messages, String[] messagesFlipped, int popSize, int messageCount) {
-		final ExecutorService executor = Executors.newFixedThreadPool(popSize);
+		final ExecutorService executor = Executors.newCachedThreadPool();
 		final List<Future<?>> futures = new ArrayList<>();
 		for(SpongeConstruction_Strings sponge : spongeArray) {
 			Future<?> future = executor.submit(() -> {
@@ -186,5 +187,6 @@ public class GeneticHelperMethods {
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
+		System.out.println();
 	}
 }
