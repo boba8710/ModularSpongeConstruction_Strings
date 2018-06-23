@@ -113,6 +113,19 @@ public class GeneticHelperMethods {
 			}
 		}
 	}
+	
+	public void runAggressiveChangeGeneration(SpongeConstruction_Strings[] population, double populationDieOffPercent) {
+		SpongeConstruction_Strings[] newPopulation = new SpongeConstruction_Strings[population.length];
+		SpongeConstruction_Strings topIndividual = population[population.length-1];
+		for(int i = newPopulation.length-2; i >= 0; i--) {
+			newPopulation[i] = new SpongeConstruction_Strings(SpongeConstruction_Strings.stateSize, SpongeConstruction_Strings.rate, SpongeConstruction_Strings.capacity, new ModularRoundFunction(SpongeConstruction_Strings.stateSize, mutateRoundFunction(topIndividual.f.getFunc(),0.50)));
+		}
+		for(int i = 0; i <  population.length; i++){
+			if(!(i > population.length-2)){
+				population[i]=newPopulation[i];
+			}
+		}
+	}
 	public void sortPopulationArray(SpongeConstruction_Strings[] population) {
 		Quicksort.quickSort(population, 0, population.length-1);
 	}

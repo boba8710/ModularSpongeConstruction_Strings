@@ -1,13 +1,9 @@
 package main;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
-import java.util.stream.Stream;
 
 public class MSC_S_MAIN {
 	public static void main(String[] args) {
@@ -19,6 +15,7 @@ public class MSC_S_MAIN {
 		double _mutationChance = 0.75;	//A higher value will increase the chance of random mutation in offspring
 		int _preserveTopNIndividuals = 8;
 		int _generationCount = 100;
+		int _aggressiveThreshold = 10;
 		//adding -p will enable parameter entry
 		try {
 			if(args[0].equals("-p")) {
@@ -36,6 +33,8 @@ public class MSC_S_MAIN {
 				_preserveTopNIndividuals = s.nextInt();
 				System.out.print("\ngenerationCount=");
 				_generationCount = s.nextInt();
+				System.out.print("\naggressiveThreshold=");
+				_aggressiveThreshold = s.nextInt();
 				s.close();
 			}else if(args[0].equals("-t")){
 				testFunction(args[1]);
@@ -47,7 +46,7 @@ public class MSC_S_MAIN {
 		final double bitchangeLowerBoundAutostop = 0.49;
 		final double bitchangeUpperBoundAutostop = 0.54;
 		final int popSize = _popSize;
-		final int aggressiveThreshold = 35;
+		final int aggressiveThreshold = _aggressiveThreshold;
 		final int messageCount = 8192;
 		final int messageLenBytes = 16;
 		final int funcCount = _funcCount;
@@ -60,7 +59,6 @@ public class MSC_S_MAIN {
 		final int generationCount = _generationCount;
 		boolean aggressiveMode = false;
 		double[] lastScores = new double[aggressiveThreshold];
-		int lastTenIterator=0;
 		
 		//RANDOM GENERATION OF INITIAL POPULATION
 		RandomFunctionBuilder functionBuilder = new RandomFunctionBuilder(funcCount);
@@ -137,7 +135,7 @@ public class MSC_S_MAIN {
 				System.out.println("Run completed. Run time elapsed: "+ghm.millisToTimestamp(runEndTime-runStartTime));
 			}
 		});
-
+		double incrementedMutationChance = mutationChance;
 		
 		//Run GA
 		for(int generation= 0; generation < generationCount-1; generation++) {
@@ -148,20 +146,22 @@ public class MSC_S_MAIN {
 			for(int i = 0 ; i < popSize; i++) {
 				spongeArrayReserve[i] = spongeArray[i];
 			}
-			lastScores[generation%9] = (0.50-(1/spongeArray[popSize-1].geneticScore));
-			if(generation >= aggressiveThreshold) {
-				double scoreProd = 1;
-				for(double score : lastScores) {
-					scoreProd*=score;
+			lastScores[generation%(aggressiveThreshold)] = (0.50-(1/spongeArray[popSize-1].geneticScore));
+
+				double scoreTotal = 0;
+				for(double d:lastScores) {
+					scoreTotal+=d;
 				}
-				if(lastScores[0]*aggressiveThreshold==scoreProd) {
+				if(lastScores[0]*aggressiveThreshold==scoreTotal) {
 					aggressiveMode = true;
 					System.out.println("!!!AGGRESSIVE GROWTH ENGAGED!!!");
 				}else {
-					aggressiveMode = false;
-					System.out.println("!!!AGGRESSIVE GROWTH DISENGAGED!!!");
+					if(aggressiveMode) {
+						aggressiveMode = false;
+						System.out.println("!!!AGGRESSIVE GROWTH DISENGAGED!!!");
+					}
 				}
-			}
+			
 			Date dateEnd = new Date();
 			long endTime = dateEnd.getTime();
 			System.out.println("Generation	"+generation+"	completed.");
@@ -173,12 +173,17 @@ public class MSC_S_MAIN {
 			topBitchange[generation] = spongeArray[popSize-1].bitchangeScore;
 			System.out.println("Projected remaining runtime: "+ghm.millisToTimestamp((long)(endTime-startTime)*(generationCount-generation)));
 			if(aggressiveMode) {
-				ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, 0.90, 1);
+				incrementedMutationChance+=0.01;
+				if(incrementedMutationChance == 1) {
+					incrementedMutationChance = mutationChance;
+				}
+				ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent,incrementedMutationChance, preserveTopNIndividuals);
 				
 			}else {
+				incrementedMutationChance = mutationChance;
 				ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, mutationChance, preserveTopNIndividuals);
 			}
-			ghm.runGenerationOnSortedPopulation(spongeArray, populationDieOffPercent, mutationChance, preserveTopNIndividuals);
+			
 			
 			if(topBitchange[generation]<bitchangeUpperBoundAutostop&&topBitchange[generation]>bitchangeLowerBoundAutostop) {
 				System.out.println("Target bitchange detected! Autostop!");
