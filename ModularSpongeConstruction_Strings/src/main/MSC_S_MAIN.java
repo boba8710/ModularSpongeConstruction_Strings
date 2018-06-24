@@ -40,6 +40,9 @@ public class MSC_S_MAIN {
 			}else if(args[0].equals("-t")){
 				testFunction(args[1]);
 				return;
+			}else if(args[0].equals("-r")){
+				generateTestRandData(args[1]);
+				return;
 			}
 		}catch(Exception e) {
 			
@@ -254,6 +257,13 @@ public class MSC_S_MAIN {
 			testingFunc.geneticScore=1/Math.abs(0.5-(score/(double)8196));
 			System.out.println("Function under test scored a bitchange of: "+testingFunc.bitchangeScore);
 			System.out.println("And a cooresponding fitness score of     : "+testingFunc.geneticScore);
+		
+	}
+	
+	static void generateTestRandData(String function){
+		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(1600, 300, 1300, new ModularRoundFunction(1600, function));
+		testingFunc.spongeAbsorb("AAAAAAAAAAAAAAAA");
+		System.out.println(testingFunc.spongeSqueeze(100));
 		
 	}
 }
