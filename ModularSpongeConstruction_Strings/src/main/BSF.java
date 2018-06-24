@@ -41,7 +41,45 @@ public class BSF {
 		return output;
 	}
 	
-	
+	public static char[] add(char[] c1, char[] c2){
+		char[] output;
+		char[] c1Operating, c2Operating;
+		if(c1.length >= c2.length){
+			c1Operating = new char[c1.length];
+			c2Operating = new char[c1.length];
+			for(int i = 0; i < c1.length; i++){
+				if(i>c2.length){
+					c2Operating[i]='0';
+				}else{
+					c2Operating[i] = c2[i];
+				}
+				c1Operating[i]=c1[i];
+			}
+			output = new char[c1.length];
+		}else{
+			c1Operating = new char[c2.length];
+			c2Operating = new char[c2.length];
+			for(int i = 0; i < c2.length; i++){
+				if(i>c1.length){
+					c1Operating[i]='0';
+				}else{
+					c1Operating[i] = c1[i];
+				}
+				c2Operating[i]=c2[i];
+			}
+			output = new char[c2.length];
+		}
+		char carry = '0';
+		char sum = '0';
+		for(int i = 0 ; i < output.length; i++){
+			sum = xor(c1Operating[i],c2Operating[i]);
+			sum = xor(sum,carry);
+			carry = and(c1Operating[i],c2Operating[i]);
+			output[i]=sum;
+		}
+		
+		return output;
+	}
 	//////////////////////////////////////////////////////////////////////
 	
 	
@@ -81,6 +119,12 @@ public class BSF {
 			iterator++;
 		}
 		return out;
+	}
+	
+	public static char[] intToCharArr(int in){
+		
+		
+		return null;
 	}
 	/////////////////////////////////////////////////////////
 }

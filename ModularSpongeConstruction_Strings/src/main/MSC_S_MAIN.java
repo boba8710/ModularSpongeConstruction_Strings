@@ -270,15 +270,15 @@ public class MSC_S_MAIN {
 	
 	static void generateTestRandDataSqueeze(String function){
 		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(1600, 300, 1300, new ModularRoundFunction(1600, function));
-		testingFunc.spongeAbsorb("AAAAAAAAAAAAAAAA");
+		testingFunc.spongeAbsorb("00000000111111110000111100110011010101010");
 		System.out.println(testingFunc.spongeSqueeze(100));
 	}
 	static void generateTestRandDataHash(String function) {
 		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(1600, 300, 1300, new ModularRoundFunction(1600, function));
 		for(int i = 0 ; i < 100; i++) {
 			String hashString = "";
-			for(int j = 00 ; j < i; j++) {
-				hashString+="A";
+			for(int j = 0 ; j < i; j++) {
+				hashString+="01";
 			}
 			testingFunc.spongeAbsorb(hashString);
 			System.out.println(testingFunc.spongeSqueeze(1));

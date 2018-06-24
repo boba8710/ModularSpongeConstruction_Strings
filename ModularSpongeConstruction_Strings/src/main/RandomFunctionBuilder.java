@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class RandomFunctionBuilder {
 	int funcCount;
-	static HashOperation[] operations = {/*new HashOperations.AND(),*/ new HashOperations.LROT(), new HashOperations.NOT(), /*new HashOperations.OR(),*/ new HashOperations.SWAP(), new HashOperations.SWAP0(), new HashOperations.SWAP1(), new HashOperations.SWAP2(), new HashOperations.XOR()};
+	static HashOperation[] operations = {/*new HashOperations.AND(),*/ new HashOperations.LROT(), new HashOperations.NOT(), /*new HashOperations.OR(),*/ new HashOperations.SWAP(), new HashOperations.SWAP0(), new HashOperations.SWAP1(), new HashOperations.SWAP2(), new HashOperations.XOR(), new HashOperations.ADD()};
 	RandomFunctionBuilder(int funcCount){
 		this.funcCount = funcCount;
 	}
@@ -17,7 +17,21 @@ public class RandomFunctionBuilder {
 		if(selected.getId() == "NOP"){
 			return paramString;
 		}
-		if(selected.getId() == "LRO" || selected.getId() == "NOT") {
+		else if(selected.getId() == "ADD"){
+			int n,m;
+			int offset = rand.nextInt(800);
+			while(true) {
+				n = rand.nextInt(799);
+				m = rand.nextInt(800);
+				if(n<m) {
+					break;
+				}
+			}
+			int p = n+offset;
+			int q = m+offset;
+			paramString+=n+","+m+","+p+","+q;
+		}
+		else if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 			int r, s;
 			while(true) {
 				r = rand.nextInt(1598);
