@@ -49,7 +49,7 @@ public class MSC_S_MAIN {
 		}catch(Exception e) {
 			
 		}
-		final double bitchangeLowerBoundAutostop = 0.50;
+		final double bitchangeLowerBoundAutostop = 0.4995;
 		final double bitchangeUpperBoundAutostop = 0.54;
 		final int popSize = _popSize;
 		final int aggressiveThreshold = _aggressiveThreshold;
