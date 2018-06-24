@@ -39,14 +39,17 @@ public class MSC_S_MAIN {
 			}else if(args[0].equals("-t")){
 				testFunction(args[1]);
 				return;
-			}else if(args[0].equals("-r")){
-				generateTestRandData(args[1]);
+			}else if(args[0].equals("-rs")){
+				generateTestRandDataSqueeze(args[1]);
+				return;
+			}else if(args[0].equals("-rh")) {
+				generateTestRandDataHash(args[1]);
 				return;
 			}
 		}catch(Exception e) {
 			
 		}
-		final double bitchangeLowerBoundAutostop = 0.49;
+		final double bitchangeLowerBoundAutostop = 0.50;
 		final double bitchangeUpperBoundAutostop = 0.54;
 		final int popSize = _popSize;
 		final int aggressiveThreshold = _aggressiveThreshold;
@@ -265,10 +268,21 @@ public class MSC_S_MAIN {
 		
 	}
 	
-	static void generateTestRandData(String function){
+	static void generateTestRandDataSqueeze(String function){
 		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(1600, 300, 1300, new ModularRoundFunction(1600, function));
 		testingFunc.spongeAbsorb("AAAAAAAAAAAAAAAA");
 		System.out.println(testingFunc.spongeSqueeze(100));
-		
+	}
+	static void generateTestRandDataHash(String function) {
+		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(1600, 300, 1300, new ModularRoundFunction(1600, function));
+		for(int i = 0 ; i < 100; i++) {
+			String hashString = "";
+			for(int j = 00 ; j < i; j++) {
+				hashString+="A";
+			}
+			testingFunc.spongeAbsorb(hashString);
+			System.out.println(testingFunc.spongeSqueeze(1));
+			testingFunc.spongePurge();
+		}
 	}
 }
