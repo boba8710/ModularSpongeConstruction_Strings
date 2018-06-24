@@ -15,9 +15,8 @@ public class RandomFunctionBuilder {
 		HashOperation selected = operations[rand.nextInt(operations.length)];
 		String paramString = selected.getId();
 		if(selected.getId() == "NOP"){
-			return paramString;
-		}
-		else if(selected.getId() == "ADD"){
+			
+		}else if(selected.getId() == "ADD"){
 			int n,m;
 			int offset = rand.nextInt(800);
 			while(true) {
@@ -27,11 +26,9 @@ public class RandomFunctionBuilder {
 					break;
 				}
 			}
-			int p = n+offset;
-			int q = m+offset;
-			paramString+=n+","+m+","+p+","+q;
-		}
-		else if(selected.getId() == "LRO" || selected.getId() == "NOT") {
+			int p = rand.nextInt((int) Math.pow(2, m-n));
+			paramString+=n+","+m+","+p;
+		}else if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 			int r, s;
 			while(true) {
 				r = rand.nextInt(1598);
@@ -69,9 +66,19 @@ public class RandomFunctionBuilder {
 			HashOperation selected = operations[rand.nextInt(operations.length)];
 			String paramString = selected.getId();
 			if(selected.getId() == "NOP"){
-				return paramString;
-			}
-			if(selected.getId() == "LRO" || selected.getId() == "NOT") {
+			}else if(selected.getId() == "ADD"){
+				int n,m;
+				int offset = rand.nextInt(800);
+				while(true) {
+					n = rand.nextInt(799);
+					m = rand.nextInt(800);
+					if(n<m) {
+						break;
+					}
+				}
+				int p = rand.nextInt((int) Math.pow(2, m-n));
+				paramString+=n+","+m+","+p;
+			}else if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 				int r, s;
 				while(true) {
 					r = rand.nextInt(1598);

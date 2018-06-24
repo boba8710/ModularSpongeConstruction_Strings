@@ -11,7 +11,7 @@ public class ADD extends HashOperation {
 
 	@Override
 	public char[] run(char[] state, String parameters) {
-		String[] paramArray = parameters.split("#");
+		String[] paramArray = parameters.split(",");
 		char[] b1 = new char[Integer.parseInt(paramArray[1])-Integer.parseInt(paramArray[0])];
 		int iterator = 0;
 		for(int i = Integer.parseInt(paramArray[0]); i < Integer.parseInt(paramArray[1]); i++){
