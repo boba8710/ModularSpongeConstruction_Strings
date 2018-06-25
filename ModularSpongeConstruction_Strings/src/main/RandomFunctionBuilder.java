@@ -26,7 +26,8 @@ public class RandomFunctionBuilder {
 					break;
 				}
 			}
-			int p = rand.nextInt((int) Math.pow(2, m-n));
+			int pInt = rand.nextInt((int) Math.pow(2, m-n));
+			String p = Integer.toBinaryString(pInt);
 			paramString+=n+","+m+","+p;
 		}else if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 			int r, s;
@@ -76,7 +77,8 @@ public class RandomFunctionBuilder {
 						break;
 					}
 				}
-				int p = rand.nextInt((int) Math.pow(2, m-n));
+				int pInt = rand.nextInt((int) Math.pow(2, m-n));
+				String p = Integer.toBinaryString(pInt);
 				paramString+=n+","+m+","+p;
 			}else if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 				int r, s;
