@@ -123,10 +123,10 @@ public class BSF {
 		return out;
 	}
 	
-	public static char[] intToCharArr(int in){
-		
-		
-		return null;
+	
+	public static char convertByteToCharacter(String inByte) {
+		assert inByte.length() == 8;
+		return (char)Integer.parseUnsignedInt(inByte, 2);
 	}
 	/////////////////////////////////////////////////////////
 }

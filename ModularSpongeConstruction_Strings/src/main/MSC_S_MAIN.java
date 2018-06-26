@@ -6,6 +6,9 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class MSC_S_MAIN {
+	final static int rate = 300;
+	final static int stateSize = 1600;
+	final static int capacity = stateSize - rate;
 	public static void main(String[] args) {
 		
 		//CONFIGURATION
@@ -58,11 +61,21 @@ public class MSC_S_MAIN {
 					System.out.println("Error: usage of -rh flag is Configurable_GA.jar -rh functionString iterations");
 				}
 				return;
+			}else if(args[0].equals("-rhb")) {
+				try {
+					generateTestRandDataHashBinary(args[1], Integer.parseInt(args[2]));
+				}catch (Exception e){
+					System.out.println("Error: usage of -rhb flag is Configurable_GA.jar -rh functionString iterations");
+					e.printStackTrace();
+				}
+				return;
 			}else if(args[0].equals("-h")) {
 				System.out.println("-p : start a parameterized run of the GA");
 				System.out.println("-t functionString : test the function described by functionString");
 				System.out.println("-rs functionString iterations : generate pseudorandom data from function described by functionString by XOF, squeezing [iterations] times");
 				System.out.println("-rh functionString iterations : generate pseudorandom data from function described by functionString using hashing of low entropy inputs, outputs [iterations] hashes");
+				System.out.println("-rhb functionString iterations : generate pseudorandom data from function described by functionString using hashing of low entropy inputs, outputs [iterations] hashes. Output stored as binary data.");
+				
 			}
 		}catch(Exception e) {
 			
@@ -260,7 +273,7 @@ public class MSC_S_MAIN {
 		*/
 	}
 	static void testFunction(String function) {
-		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(1600, 300, 1300, new ModularRoundFunction(1600, function));
+		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(stateSize, rate, capacity, new ModularRoundFunction(1600, function));
 		GeneticHelperMethods ghm = new GeneticHelperMethods();
 		String[] messages = new String[8196];
 		String[] messagesFlipped = new String[8196];
@@ -288,12 +301,12 @@ public class MSC_S_MAIN {
 	}
 	
 	static void generateTestRandDataSqueeze(String function, int iterations){
-		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(1600, 300, 1300, new ModularRoundFunction(1600, function));
+		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(stateSize, rate, capacity, new ModularRoundFunction(stateSize, function));
 		testingFunc.spongeAbsorb("00000000111111110000111100110011010101010");
 		System.out.println(testingFunc.spongeSqueeze(iterations));
 	}
 	static void generateTestRandDataHash(String function, int iterations) {
-		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(1600, 300, 1300, new ModularRoundFunction(1600, function));
+		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(stateSize, rate, capacity, new ModularRoundFunction(stateSize, function));
 		for(int i = 0 ; i < iterations; i++) {
 			String hashString = "";
 			for(int j = 0; j < i; j++) {
@@ -302,6 +315,22 @@ public class MSC_S_MAIN {
 			testingFunc.spongeAbsorb(hashString);
 			System.out.println(testingFunc.spongeSqueeze(iterations));
 			testingFunc.spongePurge();
+		}
+	}
+	static void generateTestRandDataHashBinary(String function, int iterations) {
+		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(stateSize, rate, capacity, new ModularRoundFunction(stateSize, function));
+		for(int i = 0 ; i < iterations; i++) {
+			String hashString = "";
+			for(int j = 0; j < i; j++) {
+				hashString+="01";
+			}
+			testingFunc.spongeAbsorb(hashString);
+			String outString = "";
+			for(int k = 0 ; k < rate/8;k=k+8) {
+				outString += BSF.convertByteToCharacter(testingFunc.spongeSqueeze(1).substring(k, k+8));
+			}
+			testingFunc.spongePurge();
+			System.out.print(outString);
 		}
 	}
 }
