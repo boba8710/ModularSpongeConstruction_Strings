@@ -37,14 +37,32 @@ public class MSC_S_MAIN {
 				_aggressiveThreshold = s.nextInt();
 				s.close();
 			}else if(args[0].equals("-t")){
-				testFunction(args[1]);
+				try {
+					testFunction(args[1]);
+				}catch (Exception e){
+					System.out.println("Error: usage of -t flag is Configurable_GA.jar -t functionString");
+				}
+				
 				return;
 			}else if(args[0].equals("-rs")){
+			try {
 				generateTestRandDataSqueeze(args[1], Integer.parseInt(args[2]));
+			}catch (Exception e){
+				System.out.println("Error: usage of -rs flag is Configurable_GA.jar -rs functionString iterations");
+			}
 				return;
 			}else if(args[0].equals("-rh")) {
-				generateTestRandDataHash(args[1], Integer.parseInt(args[2]));
+				try {
+					generateTestRandDataHash(args[1], Integer.parseInt(args[2]));
+				}catch (Exception e){
+					System.out.println("Error: usage of -rh flag is Configurable_GA.jar -rh functionString iterations");
+				}
 				return;
+			}else if(args[0].equals("-h")) {
+				System.out.println("-p : start a parameterized run of the GA");
+				System.out.println("-t functionString : test the function described by functionString");
+				System.out.println("-rs functionString iterations : generate pseudorandom data from function described by functionString by XOF, squeezing [iterations] times");
+				System.out.println("-rh functionString iterations : generate pseudorandom data from function described by functionString using hashing of low entropy inputs, outputs [iterations] hashes");
 			}
 		}catch(Exception e) {
 			
