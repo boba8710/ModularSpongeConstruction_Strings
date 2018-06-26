@@ -40,10 +40,10 @@ public class MSC_S_MAIN {
 				testFunction(args[1]);
 				return;
 			}else if(args[0].equals("-rs")){
-				generateTestRandDataSqueeze(args[1]);
+				generateTestRandDataSqueeze(args[1], Integer.parseInt(args[2]));
 				return;
 			}else if(args[0].equals("-rh")) {
-				generateTestRandDataHash(args[1]);
+				generateTestRandDataHash(args[1], Integer.parseInt(args[2]));
 				return;
 			}
 		}catch(Exception e) {
@@ -269,20 +269,20 @@ public class MSC_S_MAIN {
 		
 	}
 	
-	static void generateTestRandDataSqueeze(String function){
+	static void generateTestRandDataSqueeze(String function, int iterations){
 		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(1600, 300, 1300, new ModularRoundFunction(1600, function));
 		testingFunc.spongeAbsorb("00000000111111110000111100110011010101010");
-		System.out.println(testingFunc.spongeSqueeze(100));
+		System.out.println(testingFunc.spongeSqueeze(iterations));
 	}
-	static void generateTestRandDataHash(String function) {
+	static void generateTestRandDataHash(String function, int iterations) {
 		SpongeConstruction_Strings testingFunc = new SpongeConstruction_Strings(1600, 300, 1300, new ModularRoundFunction(1600, function));
-		for(int i = 0 ; i < 100; i++) {
+		for(int i = 0 ; i < iterations; i++) {
 			String hashString = "";
-			for(int j = 0 ; j < i; j++) {
+			for(int j = 0; j < i; j++) {
 				hashString+="01";
 			}
 			testingFunc.spongeAbsorb(hashString);
-			System.out.println(testingFunc.spongeSqueeze(1));
+			System.out.println(testingFunc.spongeSqueeze(iterations));
 			testingFunc.spongePurge();
 		}
 	}
