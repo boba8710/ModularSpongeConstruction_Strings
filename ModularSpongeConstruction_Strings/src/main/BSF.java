@@ -48,10 +48,11 @@ public class BSF {
 			c1Operating = new char[c1.length];
 			c2Operating = new char[c1.length];
 			for(int i = 0; i < c1.length; i++){
-				if(i>c2.length-1){
+				int lenDif = c1.length - c2.length;
+				if(i < lenDif){
 					c2Operating[i]='0';
 				}else{
-					c2Operating[i] = c2[i];
+					c2Operating[i] = c2[i-lenDif];
 				}
 				c1Operating[i]=c1[i];
 			}
@@ -60,10 +61,11 @@ public class BSF {
 			c1Operating = new char[c2.length];
 			c2Operating = new char[c2.length];
 			for(int i = 0; i < c2.length; i++){
-				if(i>c1.length-1){
+				int lenDif = c2.length - c1.length;
+				if(i < lenDif){
 					c1Operating[i]='0';
 				}else{
-					c1Operating[i] = c1[i];
+					c1Operating[i] = c1[i-lenDif];
 				}
 				c2Operating[i]=c2[i];
 			}
