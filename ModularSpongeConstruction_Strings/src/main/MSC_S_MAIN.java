@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Scanner;
 
 public class MSC_S_MAIN {
-	final static int rate = 300;
+	final static int rate = 320;
 	final static int stateSize = 1600;
 	final static int capacity = stateSize - rate;
 	public static void main(String[] args) {
@@ -88,7 +88,7 @@ public class MSC_S_MAIN {
 		final int messageLenBytes = 16;
 		final int funcCount = _funcCount;
 		final int stateSize = 1600;
-		final int rate = 300;
+		final int rate = 320;
 		final int capacity = 1600-rate;
 		final double populationDieOffPercent = _populationDieOffPercent; //A higher value is more selective and less diverse, a lower value is the opposite
 		final double mutationChance = _mutationChance;	//A higher value will increase the chance of random mutation in offspring
