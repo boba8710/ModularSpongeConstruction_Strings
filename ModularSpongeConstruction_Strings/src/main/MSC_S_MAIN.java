@@ -175,6 +175,7 @@ public class MSC_S_MAIN {
 		double incrementedMutationChance = mutationChance;
 		
 		//Run GA
+		int lastScoresIterator = 0;
 		for(int generation= 0; generation < generationCount-1; generation++) {
 			Date dateStart = new Date();
 			long startTime = dateStart.getTime();
@@ -183,8 +184,11 @@ public class MSC_S_MAIN {
 			for(int i = 0 ; i < popSize; i++) {
 				spongeArrayReserve[i] = spongeArray[i];
 			}
-			lastScores[generation%(aggressiveThreshold)] = (0.50-(1/spongeArray[popSize-1].geneticScore));
-
+			lastScores[lastScoresIterator] = spongeArray[popSize-1].geneticScore;
+			lastScoresIterator++;
+			if(lastScoresIterator == aggressiveThreshold){
+				lastScoresIterator = 0;
+			}
 				double scoreTotal = 0;
 				for(double d:lastScores) {
 					scoreTotal+=d;
