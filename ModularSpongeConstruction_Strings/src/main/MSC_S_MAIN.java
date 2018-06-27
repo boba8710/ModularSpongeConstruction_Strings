@@ -15,7 +15,7 @@ public class MSC_S_MAIN {
 		int _popSize = 256;
 		int _funcCount = 30;
 		double _populationDieOffPercent = 0.50; //A higher value is more selective and less diverse, a lower value is the opposite
-		double _mutationChance = 0.42;	//A higher value will increase the chance of random mutation in offspring
+		double _mutationChance = 0.38;	//A higher value will increase the chance of random mutation in offspring
 		int _preserveTopNIndividuals = 16;
 		int _generationCount = 200;
 		int _aggressiveThreshold = 15;
