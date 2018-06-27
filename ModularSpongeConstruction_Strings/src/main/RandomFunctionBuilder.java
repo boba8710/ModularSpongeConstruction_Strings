@@ -18,7 +18,6 @@ public class RandomFunctionBuilder {
 			
 		}else if(selected.getId() == "ADD"){
 			int n,m;
-			int offset = rand.nextInt(800);
 			while(true) {
 				n = rand.nextInt(200)*8;
 				m = (rand.nextInt(200)+1)*8;
@@ -44,7 +43,7 @@ public class RandomFunctionBuilder {
 				}
 			}else{
 				int n,m;
-				int offset = rand.nextInt(100);
+				int offset = rand.nextInt(100)*8;
 				while(true) {
 					n = rand.nextInt(100)*8;
 					m = (rand.nextInt(100)+1)*8;
@@ -71,7 +70,6 @@ public class RandomFunctionBuilder {
 			}else if(selected.getId() == "ADD"){ //ADD requires a n and m (the start and end of a state chunk) and a p, which is the random integer to add to
 												 //the chunk
 				int n,m;
-				int offset = rand.nextInt(800);
 				while(true) {
 					n = rand.nextInt(200)*8;
 					m = (rand.nextInt(200)+1)*8;
@@ -97,7 +95,7 @@ public class RandomFunctionBuilder {
 					}
 				}else{
 					int n,m;
-					int offset = rand.nextInt(100);
+					int offset = rand.nextInt(100)*8;
 					while(true) {
 						n = rand.nextInt(100)*8;
 						m = (rand.nextInt(100)+1)*8;
