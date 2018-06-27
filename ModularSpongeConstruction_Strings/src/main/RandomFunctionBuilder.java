@@ -20,8 +20,8 @@ public class RandomFunctionBuilder {
 			int n,m;
 			int offset = rand.nextInt(800);
 			while(true) {
-				n = rand.nextInt(799);
-				m = rand.nextInt(800);
+				n = rand.nextInt(200)*8;
+				m = (rand.nextInt(200)+1)*8;
 				if(n<m) {
 					break;
 				}
@@ -32,22 +32,22 @@ public class RandomFunctionBuilder {
 		}else if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 			int r, s;
 			while(true) {
-				r = rand.nextInt(1598);
-				s = rand.nextInt(1599);
+				r = rand.nextInt(200)*8;
+				s = (rand.nextInt(200)+1)*8;
 				if(s>r) {
 					break;
 				}
 			}
 				paramString+=r+","+s;
 				if(selected.getId() == "LRO") {
-					paramString+=","+rand.nextInt(200);
+					paramString+=","+rand.nextInt(s-r);
 				}
 			}else{
 				int n,m;
-				int offset = rand.nextInt(800);
+				int offset = rand.nextInt(100);
 				while(true) {
-					n = rand.nextInt(799);
-					m = rand.nextInt(800);
+					n = rand.nextInt(100)*8;
+					m = (rand.nextInt(100)+1)*8;
 					if(n<m) {
 						break;
 					}
@@ -73,8 +73,8 @@ public class RandomFunctionBuilder {
 				int n,m;
 				int offset = rand.nextInt(800);
 				while(true) {
-					n = rand.nextInt(799);
-					m = rand.nextInt(800);
+					n = rand.nextInt(200)*8;
+					m = (rand.nextInt(200)+1)*8;
 					if(n<m) {
 						break;
 					}
@@ -85,22 +85,22 @@ public class RandomFunctionBuilder {
 			}else if(selected.getId() == "LRO" || selected.getId() == "NOT") { //LRO and NOT both act on one hash chunk. 
 				int r, s;
 				while(true) {
-					r = rand.nextInt(1598);
-					s = rand.nextInt(1599);
+					r = rand.nextInt(200)*8;
+					s = (rand.nextInt(200)+1)*8;
 					if(s>r) {
 						break;
 					}
 				}
 					paramString+=r+","+s;
 					if(selected.getId() == "LRO") {
-						paramString+=","+rand.nextInt(200);
+						paramString+=","+rand.nextInt(s-r);
 					}
 				}else{
 					int n,m;
-					int offset = rand.nextInt(800);
+					int offset = rand.nextInt(100);
 					while(true) {
-						n = rand.nextInt(799);
-						m = rand.nextInt(800);
+						n = rand.nextInt(100)*8;
+						m = (rand.nextInt(100)+1)*8;
 						if(n<m) {
 							break;
 						}
