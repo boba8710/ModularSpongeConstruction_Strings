@@ -82,6 +82,7 @@ public class MSC_S_MAIN {
 		}
 		final double bitchangeLowerBoundAutostop = 0.4995;
 		final double bitchangeUpperBoundAutostop = 0.54;
+		final int wordSize = 8;
 		final int popSize = _popSize;
 		final int aggressiveThreshold = _aggressiveThreshold;
 		final int messageCount = 8192;
@@ -98,7 +99,7 @@ public class MSC_S_MAIN {
 		double[] lastScores = new double[aggressiveThreshold];
 		
 		//RANDOM GENERATION OF INITIAL POPULATION
-		RandomFunctionBuilder functionBuilder = new RandomFunctionBuilder(funcCount);
+		RandomFunctionBuilder functionBuilder = new RandomFunctionBuilder(stateSize, funcCount, wordSize);
 		String[] functionStringPop = new String[popSize];
 		ModularRoundFunction[] functionPop = new ModularRoundFunction[popSize];
 		SpongeConstruction_Strings[] spongeArray = new SpongeConstruction_Strings[popSize];
