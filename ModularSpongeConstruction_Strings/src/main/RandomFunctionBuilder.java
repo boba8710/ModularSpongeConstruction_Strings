@@ -3,14 +3,11 @@ import HashOperations.HashOperation;
 import java.util.Random;
 
 public class RandomFunctionBuilder {
-	int funcCount;
-	int wordSize;
-	int stateSize;
+	int funcCount, wordSize;
 	static HashOperation[] operations = {new HashOperations.AND(), new HashOperations.LROT(), new HashOperations.NOT(), /*new HashOperations.OR(),*/ new HashOperations.SWAP(), new HashOperations.SWAP0(), new HashOperations.SWAP1(), new HashOperations.SWAP2(), new HashOperations.XOR(), /*new HashOperations.ADD(),*/ new HashOperations.XORC()};
 	RandomFunctionBuilder(int stateSize, int funcCount, int wordSize){
 		this.funcCount = funcCount;
 		this.wordSize = wordSize;
-		this.stateSize = stateSize;
 	}
 	public RandomFunctionBuilder() {
 	}
@@ -23,8 +20,8 @@ public class RandomFunctionBuilder {
 		}else if(selected.getId() == "ADD"){
 			int n,m;
 			while(true) {
-				n = rand.nextInt(stateSize/wordSize)*wordSize;
-				m = (rand.nextInt(stateSize/wordSize)+1)*wordSize;
+				n = rand.nextInt(200)*wordSize;
+				m = (rand.nextInt(200)+1)*wordSize;
 				if(n<m) {
 					break;
 				}
@@ -35,8 +32,8 @@ public class RandomFunctionBuilder {
 		}else if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 			int r, s;
 			while(true) {
-				r = (rand.nextInt(stateSize/wordSize)-1)*wordSize;
-				s = (rand.nextInt(stateSize/wordSize))*wordSize;
+				r = rand.nextInt(200)*wordSize;
+				s = (rand.nextInt(200)+1)*wordSize;
 				if(s>r) {
 					break;
 				}
@@ -48,8 +45,8 @@ public class RandomFunctionBuilder {
 			}else if(selected.getId() == "XOC"){
 				int n,m;
 				while(true) {
-					n = (rand.nextInt(stateSize/wordSize)-1)*wordSize;
-					m = (rand.nextInt(stateSize/wordSize))*wordSize;
+					n = rand.nextInt(200)*wordSize;
+					m = (rand.nextInt(200)+1)*wordSize;
 					if(n<m) {
 						break;
 					}
@@ -62,10 +59,10 @@ public class RandomFunctionBuilder {
 				paramString+=n+","+m+","+p;
 			}else{
 				int n,m;
-				int offset = rand.nextInt(stateSize/(wordSize*2))*wordSize;
+				int offset = rand.nextInt(100)*wordSize;
 				while(true) {
-					n = (rand.nextInt(stateSize/(wordSize*2))-1)*wordSize;
-					m = (rand.nextInt(stateSize/(wordSize*2)))*wordSize;
+					n = rand.nextInt(100)*wordSize;
+					m = (rand.nextInt(100)+1)*wordSize;
 					if(n<m) {
 						break;
 					}
@@ -90,8 +87,8 @@ public class RandomFunctionBuilder {
 												 //the chunk
 				int n,m;
 				while(true) {
-					n = (rand.nextInt(stateSize/wordSize)-1)*wordSize;
-					m = (rand.nextInt(stateSize/wordSize))*wordSize;
+					n = rand.nextInt(200)*wordSize;
+					m = (rand.nextInt(200)+1)*wordSize;
 					if(n<m) {
 						break;
 					}
@@ -102,8 +99,8 @@ public class RandomFunctionBuilder {
 			}else if(selected.getId() == "LRO" || selected.getId() == "NOT") { //LRO and NOT both act on one hash chunk. 
 				int r, s;
 				while(true) {
-					r = (rand.nextInt(stateSize/wordSize)-1)*wordSize;
-					s = (rand.nextInt(stateSize/wordSize))*wordSize;
+					r = rand.nextInt(200)*wordSize;
+					s = (rand.nextInt(200)+1)*wordSize;
 					if(s>r) {
 						break;
 					}
@@ -115,8 +112,8 @@ public class RandomFunctionBuilder {
 				}else if(selected.getId() == "XOC"){
 					int n,m;
 					while(true) {
-						n = (rand.nextInt(stateSize/wordSize)-1)*wordSize;
-						m = (rand.nextInt(stateSize/wordSize))*wordSize;
+						n = rand.nextInt(200)*wordSize;
+						m = (rand.nextInt(200)+1)*wordSize;
 						if(n<m) {
 							break;
 						}
@@ -129,10 +126,10 @@ public class RandomFunctionBuilder {
 					paramString+=n+","+m+","+p;
 				}else{
 					int n,m;
-					int offset = rand.nextInt(stateSize/(wordSize*2))*wordSize;
+					int offset = rand.nextInt(100)*wordSize;
 					while(true) {
-						n = (rand.nextInt(stateSize/(wordSize*2))-1)*wordSize;
-						m = (rand.nextInt(stateSize/(wordSize*2)))*wordSize;
+						n = rand.nextInt(100)*wordSize;
+						m = (rand.nextInt(100)+1)*wordSize;
 						if(n<m) {
 							break;
 						}

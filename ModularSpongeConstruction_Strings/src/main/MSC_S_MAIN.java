@@ -99,7 +99,7 @@ public class MSC_S_MAIN {
 		double[] lastScores = new double[aggressiveThreshold];
 		
 		//RANDOM GENERATION OF INITIAL POPULATION
-		RandomFunctionBuilder functionBuilder = new RandomFunctionBuilder(stateSize, funcCount, wordSize);
+		RandomFunctionBuilder functionBuilder = new RandomFunctionBuilder(stateSize,funcCount,wordSize);
 		String[] functionStringPop = new String[popSize];
 		ModularRoundFunction[] functionPop = new ModularRoundFunction[popSize];
 		SpongeConstruction_Strings[] spongeArray = new SpongeConstruction_Strings[popSize];
