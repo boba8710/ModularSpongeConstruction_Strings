@@ -1,6 +1,7 @@
 package HashOperations;
 
 public class XOR extends HashOperation {
+	//XOR two chunks of state with each other, replacing the first chunk
 	public String id = "XOR";
 	@Override
 	public

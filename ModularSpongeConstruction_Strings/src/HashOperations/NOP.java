@@ -1,6 +1,7 @@
 package HashOperations;
 
 public class NOP extends HashOperation {
+	//No-Operation
 	public String id = "NOP";
 	@Override
 	public

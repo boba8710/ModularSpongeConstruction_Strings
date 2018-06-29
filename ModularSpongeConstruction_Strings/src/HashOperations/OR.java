@@ -1,6 +1,7 @@
 package HashOperations;
 
 public class OR extends HashOperation {
+	//OR two chunks of state with each other, replacing the first chunk
 	public String id = "ORR";
 	@Override
 	public

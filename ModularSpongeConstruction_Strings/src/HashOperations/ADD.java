@@ -3,6 +3,7 @@ package HashOperations;
 import main.BSF;
 
 public class ADD extends HashOperation {
+	//Add a given constant to a chunk of the state
 	String id = "ADD";
 	@Override
 	public String getId() {

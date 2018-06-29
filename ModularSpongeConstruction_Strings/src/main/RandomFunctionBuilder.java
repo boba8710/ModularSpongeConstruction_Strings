@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class RandomFunctionBuilder {
 	int funcCount;
-	static HashOperation[] operations = {/*new HashOperations.AND(),*/ new HashOperations.LROT(), new HashOperations.NOT(), /*new HashOperations.OR(),*/ new HashOperations.SWAP(), new HashOperations.SWAP0(), new HashOperations.SWAP1(), new HashOperations.SWAP2(), new HashOperations.XOR(), new HashOperations.ADD()};
+	static HashOperation[] operations = {new HashOperations.AND(), new HashOperations.LROT(), new HashOperations.NOT(), /*new HashOperations.OR(),*/ new HashOperations.SWAP(), new HashOperations.SWAP0(), new HashOperations.SWAP1(), new HashOperations.SWAP2(), new HashOperations.XOR(), /*new HashOperations.ADD(),*/ new HashOperations.XORC()};
 	RandomFunctionBuilder(int funcCount){
 		this.funcCount = funcCount;
 	}
@@ -31,8 +31,8 @@ public class RandomFunctionBuilder {
 		}else if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 			int r, s;
 			while(true) {
-				r = rand.nextInt(200)*8;
-				s = (rand.nextInt(200)+1)*8;
+				r = (rand.nextInt(200)-1)*8;
+				s = (rand.nextInt(200))*8;
 				if(s>r) {
 					break;
 				}
@@ -41,12 +41,27 @@ public class RandomFunctionBuilder {
 				if(selected.getId() == "LRO") {
 					paramString+=","+rand.nextInt(s-r);
 				}
+			}else if(selected.getId() == "XOC"){
+				int n,m;
+				while(true) {
+					n = (rand.nextInt(200)-1)*8;
+					m = (rand.nextInt(200))*8;
+					if(n<m) {
+						break;
+					}
+				}
+				int pInt = rand.nextInt((int) Math.pow(2, m-n));
+				String p = Integer.toBinaryString(pInt);
+				while(p.length() != m-n){
+					p="0"+p;
+				}
+				paramString+=n+","+m+","+p;
 			}else{
 				int n,m;
 				int offset = rand.nextInt(100)*8;
 				while(true) {
-					n = rand.nextInt(100)*8;
-					m = (rand.nextInt(100)+1)*8;
+					n = (rand.nextInt(100)-1)*8;
+					m = (rand.nextInt(100))*8;
 					if(n<m) {
 						break;
 					}
@@ -71,8 +86,8 @@ public class RandomFunctionBuilder {
 												 //the chunk
 				int n,m;
 				while(true) {
-					n = rand.nextInt(200)*8;
-					m = (rand.nextInt(200)+1)*8;
+					n = (rand.nextInt(200)-1)*8;
+					m = (rand.nextInt(200))*8;
 					if(n<m) {
 						break;
 					}
@@ -83,8 +98,8 @@ public class RandomFunctionBuilder {
 			}else if(selected.getId() == "LRO" || selected.getId() == "NOT") { //LRO and NOT both act on one hash chunk. 
 				int r, s;
 				while(true) {
-					r = rand.nextInt(200)*8;
-					s = (rand.nextInt(200)+1)*8;
+					r = (rand.nextInt(200)-1)*8;
+					s = (rand.nextInt(200))*8;
 					if(s>r) {
 						break;
 					}
@@ -93,12 +108,27 @@ public class RandomFunctionBuilder {
 					if(selected.getId() == "LRO") {
 						paramString+=","+rand.nextInt(s-r);
 					}
+				}else if(selected.getId() == "XOC"){
+					int n,m;
+					while(true) {
+						n = (rand.nextInt(200)-1)*8;
+						m = (rand.nextInt(200))*8;
+						if(n<m) {
+							break;
+						}
+					}
+					int pInt = rand.nextInt((int) Math.pow(2, m-n));
+					String p = Integer.toBinaryString(pInt);
+					while(p.length() != m-n){
+						p="0"+p;
+					}
+					paramString+=n+","+m+","+p;
 				}else{
 					int n,m;
 					int offset = rand.nextInt(100)*8;
 					while(true) {
-						n = rand.nextInt(100)*8;
-						m = (rand.nextInt(100)+1)*8;
+						n = (rand.nextInt(100)-1)*8;
+						m = (rand.nextInt(100))*8;
 						if(n<m) {
 							break;
 						}

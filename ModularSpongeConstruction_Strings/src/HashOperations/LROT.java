@@ -3,6 +3,7 @@ package HashOperations;
 import main.BSF;
 
 public class LROT extends HashOperation {
+	//Left-rotate a chunk of the state by a given value x
 	public String id = "LRO";
 	@Override
 	public

@@ -1,7 +1,7 @@
 package HashOperations;
 
 public class NOT extends HashOperation {
-
+	//take the compliment of a chunk of the state
 	public String id = "NOT";
 	@Override
 	public

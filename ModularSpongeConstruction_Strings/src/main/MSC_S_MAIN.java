@@ -13,11 +13,11 @@ public class MSC_S_MAIN {
 		
 		//CONFIGURATION
 		int _popSize = 256;
-		int _funcCount = 30;
+		int _funcCount = 40;
 		double _populationDieOffPercent = 0.50; //A higher value is more selective and less diverse, a lower value is the opposite
-		double _mutationChance = 0.38;	//A higher value will increase the chance of random mutation in offspring
+		double _mutationChance = 0.35;	//A higher value will increase the chance of random mutation in offspring
 		int _preserveTopNIndividuals = 16;
-		int _generationCount = 200;
+		int _generationCount = 400;
 		int _aggressiveThreshold = 15;
 		//adding -p will enable parameter entry
 		try {
@@ -196,7 +196,7 @@ public class MSC_S_MAIN {
 				if(lastScores[0]*aggressiveThreshold==scoreTotal) {
 					aggressiveMode = true;
 					System.out.println("Stagnant run detected, breaking");
-					break;
+					System.exit(1);
 				}else {
 					if(aggressiveMode) {
 						aggressiveMode = false;

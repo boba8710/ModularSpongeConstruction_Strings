@@ -1,6 +1,7 @@
 package HashOperations;
 
 public class AND extends HashOperation {
+	//AND two chunks of the state, replacing the first
 	public String id = "AND";
 	@Override
 	public

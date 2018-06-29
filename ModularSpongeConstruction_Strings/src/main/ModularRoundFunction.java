@@ -4,7 +4,7 @@ import HashOperations.HashOperation;
 
 public class ModularRoundFunction extends RoundFunction {
 	String parameterString;
-	static HashOperation[] opTable = {/*new HashOperations.AND(),*/ new HashOperations.LROT(), new HashOperations.NOT(), /*new HashOperations.OR(),*/ new HashOperations.SWAP(), new HashOperations.SWAP0(), new HashOperations.SWAP1(), new HashOperations.SWAP2(), new HashOperations.XOR(), new HashOperations.ADD()};
+	static HashOperation[] opTable = {new HashOperations.AND(), new HashOperations.LROT(), new HashOperations.NOT(), /*new HashOperations.OR(),*/ new HashOperations.SWAP(), new HashOperations.SWAP0(), new HashOperations.SWAP1(), new HashOperations.SWAP2(), new HashOperations.XOR(), /*new HashOperations.ADD(),*/ new HashOperations.XORC()};
 	ModularRoundFunction(int stateSize, String parameterString) {
 		super(stateSize);
 		this.parameterString = parameterString;

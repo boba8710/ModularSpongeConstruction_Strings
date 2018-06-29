@@ -3,6 +3,7 @@ package HashOperations;
 import main.BSF;
 
 public class SWAP0 extends HashOperation {
+	//Swap two chunks of state, reversing the first
 	public String id = "SW0";
 	@Override
 	public

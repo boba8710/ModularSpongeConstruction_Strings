@@ -1,6 +1,7 @@
 package HashOperations;
 
 public class SWAP extends HashOperation {
+	//Swap two chunks of state
 	public String id = "SWA";
 	@Override
 	public
