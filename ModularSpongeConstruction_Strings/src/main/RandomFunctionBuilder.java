@@ -9,7 +9,7 @@ public class RandomFunctionBuilder {
 	RandomFunctionBuilder(int stateSize, int funcCount, int wordSize){
 		this.funcCount = funcCount; //The functionCount is the amount of functions that each round function will contain. Because this includes
 									//NOPS, this is effectively the maximum amount of operations in a single round function.
-		this.wordSize = wordSize;
+		this.wordSize = wordSize;   //the wordSize variable is not currently used, but in the future it will be used to set the wordsize that the function operates on
 	}
 	public RandomFunctionBuilder() {
 	}

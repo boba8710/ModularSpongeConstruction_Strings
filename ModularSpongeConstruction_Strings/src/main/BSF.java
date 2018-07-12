@@ -1,4 +1,10 @@
 package main;
+/**
+ * 
+ * @author Zaine Wilson
+ * This class contains ways to treat character arrays and characters as bitstrings and bits, respectively. this class seeks to implement speedy ways
+ * to apply bitwise operations to correctly-formatted strings.
+ */
 public class BSF {
 	public static char[] xor(char[] s1_char, char[] s2_char) {
 		assert s1_char.length == s2_char.length;
@@ -123,7 +129,11 @@ public class BSF {
 		return out;
 	}
 	
-	
+	/**
+	 * 
+	 * @param inByte
+	 * @return the character value of an 8-bit bitstring
+	 */
 	public static char convertByteToCharacter(String inByte) {
 		assert inByte.length() == 8;
 		return (char)Integer.parseUnsignedInt(inByte, 2);

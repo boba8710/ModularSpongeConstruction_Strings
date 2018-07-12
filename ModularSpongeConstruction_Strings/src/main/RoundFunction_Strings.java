@@ -1,6 +1,12 @@
 package main;
 public class RoundFunction_Strings extends RoundFunction {
 	int stateSize;
+	/**
+	 * 
+	 * @param stateSize
+	 * 
+	 * This is a static testing function, not used in actual runs.
+	 */
 	public RoundFunction_Strings(int stateSize) {
 		super(stateSize);
 	}
