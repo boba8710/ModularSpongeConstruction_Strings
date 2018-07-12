@@ -93,7 +93,7 @@ class SpongeConstruction_Strings{
 			state = f.runFunction(state);
 			iterator++;
 		}
-		//System.out.println("Sponge absorbtion completed.");
+		//System.out.println("Sponge absorption completed.");
 	}
 	
 	public String spongeSqueeze(int iterations){

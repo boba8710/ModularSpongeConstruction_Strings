@@ -5,13 +5,15 @@ import java.util.Random;
 public class RandomFunctionBuilder {
 	int funcCount, wordSize;
 	static HashOperation[] operations = {new HashOperations.AND(), new HashOperations.LROT(), new HashOperations.NOT(), /*new HashOperations.OR(),*/ new HashOperations.SWAP(), new HashOperations.SWAP0(), new HashOperations.SWAP1(), new HashOperations.SWAP2(), new HashOperations.XOR(), /*new HashOperations.ADD(),*/ new HashOperations.XORC()};
+	//This operations array must be the same in both RandomFunctionBuilder and ModularRoundFunction. Operations can be enabled and disabled by commenting them out.
 	RandomFunctionBuilder(int stateSize, int funcCount, int wordSize){
-		this.funcCount = funcCount;
+		this.funcCount = funcCount; //The functionCount is the amount of functions that each round function will contain. Because this includes
+									//NOPS, this is effectively the maximum amount of operations in a single round function.
 		this.wordSize = wordSize;
 	}
 	public RandomFunctionBuilder() {
 	}
-	public String genRandOperation() { //used during mutations
+	public String genRandOperation() { //used during mutations, see the below method for more complete documentation, as most of the functionality is shared
 		Random rand = new Random();
 		HashOperation selected = operations[rand.nextInt(operations.length)];
 		String paramString = selected.getId();
@@ -20,8 +22,8 @@ public class RandomFunctionBuilder {
 		}else if(selected.getId() == "ADD"){
 			int n,m;
 			while(true) {
-				n = rand.nextInt(200)*wordSize;
-				m = (rand.nextInt(200)+1)*wordSize;
+				n = rand.nextInt(1599);
+				m = rand.nextInt(1600);
 				if(n<m) {
 					break;
 				}
@@ -32,8 +34,8 @@ public class RandomFunctionBuilder {
 		}else if(selected.getId() == "LRO" || selected.getId() == "NOT") {
 			int r, s;
 			while(true) {
-				r = rand.nextInt(200)*wordSize;
-				s = (rand.nextInt(200)+1)*wordSize;
+				r = rand.nextInt(1599);
+				s = rand.nextInt(1600);
 				if(s>r) {
 					break;
 				}
@@ -42,27 +44,27 @@ public class RandomFunctionBuilder {
 				if(selected.getId() == "LRO") {
 					paramString+=","+rand.nextInt(s-r);
 				}
-			}else if(selected.getId() == "XOC"){
+			}else if(selected.getId() == "XOC"){ 
 				int n,m;
 				while(true) {
-					n = rand.nextInt(200)*wordSize;
-					m = (rand.nextInt(200)+1)*wordSize;
+					n = rand.nextInt(1599);
+					m = rand.nextInt(1600);
 					if(n<m) {
 						break;
 					}
 				}
-				int pInt = rand.nextInt((int) Math.pow(2, m-n));
+				int pInt = rand.nextInt((int) Math.pow(2, m-n)); 
 				String p = Integer.toBinaryString(pInt);
-				while(p.length() != m-n){
+				while(p.length() != m-n){ 
 					p="0"+p;
 				}
 				paramString+=n+","+m+","+p;
-			}else{
+			}else{	 
 				int n,m;
-				int offset = rand.nextInt(100)*wordSize;
+				int offset = rand.nextInt(800); 
 				while(true) {
-					n = rand.nextInt(100)*wordSize;
-					m = (rand.nextInt(100)+1)*wordSize;
+					n = rand.nextInt(799);
+					m = (rand.nextInt(800));
 					if(n<m) {
 						break;
 					}
@@ -86,9 +88,9 @@ public class RandomFunctionBuilder {
 			}else if(selected.getId() == "ADD"){ //ADD requires a n and m (the start and end of a state chunk) and a p, which is the random integer to add to
 												 //the chunk
 				int n,m;
-				while(true) {
-					n = rand.nextInt(200)*wordSize;
-					m = (rand.nextInt(200)+1)*wordSize;
+				while(true) { //This process is slightly inefficient, involving some wasted cycles when m>n. This, however, should only be 50% of cycles.
+					n = rand.nextInt(1599);
+					m = rand.nextInt(1600);
 					if(n<m) {
 						break;
 					}
@@ -99,37 +101,42 @@ public class RandomFunctionBuilder {
 			}else if(selected.getId() == "LRO" || selected.getId() == "NOT") { //LRO and NOT both act on one hash chunk. 
 				int r, s;
 				while(true) {
-					r = rand.nextInt(200)*wordSize;
-					s = (rand.nextInt(200)+1)*wordSize;
+					r = rand.nextInt(1599);
+					s = rand.nextInt(1600);
 					if(s>r) {
 						break;
 					}
 				}
 					paramString+=r+","+s;
 					if(selected.getId() == "LRO") {
-						paramString+=","+rand.nextInt(s-r);
+						paramString+=","+rand.nextInt(s-r); //Generate a rotation constant no larger than the length in bits of the current bitstring
 					}
-				}else if(selected.getId() == "XOC"){
+				}else if(selected.getId() == "XOC"){//This operation exclusive ors a round constant into a section of the state.
 					int n,m;
 					while(true) {
-						n = rand.nextInt(200)*wordSize;
-						m = (rand.nextInt(200)+1)*wordSize;
+						n = rand.nextInt(1599);
+						m = rand.nextInt(1600);
 						if(n<m) {
 							break;
 						}
 					}
-					int pInt = rand.nextInt((int) Math.pow(2, m-n));
+					int pInt = rand.nextInt((int) Math.pow(2, m-n));//Here, we generate a round constant.
 					String p = Integer.toBinaryString(pInt);
-					while(p.length() != m-n){
+					while(p.length() != m-n){//In case the round constant is less than m-n bits, we pad with leading zeroes in order to assure that the stringXOR operation works properly.
 						p="0"+p;
 					}
 					paramString+=n+","+m+","+p;
-				}else{
+				}else{//This serves as a catchall for the other operations, OR, AND, and XOR. 
+					  //The general form of these operations is:
+					  //Select an offset between 0-799 (an offset of zero is almost always not condusive to good behavior, but it is left in for completeness)
+					  //Generate upper and lower bounds that are in the FIRST HALF of the state
+					  //adding the offset to the upper and lower bounds then creates a second set of bounds, equivalent in length to the first
+					  //The operation will be applied in the form (firstChunk * secondChunk), where '*' represents a bitwise operation.
 					int n,m;
-					int offset = rand.nextInt(100)*wordSize;
+					int offset = rand.nextInt(800);
 					while(true) {
-						n = rand.nextInt(100)*wordSize;
-						m = (rand.nextInt(100)+1)*wordSize;
+						n = rand.nextInt(799);
+						m = (rand.nextInt(800));
 						if(n<m) {
 							break;
 						}

@@ -12,13 +12,13 @@ public class MSC_S_MAIN {
 	public static void main(String[] args) {
 		
 		//CONFIGURATION
-		int _popSize = 256;
+		int _popSize = 128;
 		int _funcCount = 40;
 		double _populationDieOffPercent = 0.50; //A higher value is more selective and less diverse, a lower value is the opposite
-		double _mutationChance = 0.35;	//A higher value will increase the chance of random mutation in offspring
-		int _preserveTopNIndividuals = 16;
-		int _generationCount = 400;
-		int _aggressiveThreshold = 15;
+		double _mutationChance = 0.34;	//A higher value will increase the chance of random mutation in offspring
+		int _preserveTopNIndividuals = 4;
+		int _generationCount = 100;
+		int _aggressiveThreshold = 25;
 		//adding -p will enable parameter entry
 		try {
 			if(args[0].equals("-p")) {
@@ -318,7 +318,7 @@ public class MSC_S_MAIN {
 				hashString+="01";
 			}
 			testingFunc.spongeAbsorb(hashString);
-			System.out.println(testingFunc.spongeSqueeze(iterations));
+			System.out.println(testingFunc.spongeSqueeze(1));
 			testingFunc.spongePurge();
 		}
 	}
