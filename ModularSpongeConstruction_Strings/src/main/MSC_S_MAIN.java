@@ -9,6 +9,8 @@ public class MSC_S_MAIN {
 	final static int rate = 320;
 	final static int stateSize = 1600;
 	final static int capacity = stateSize - rate;
+	static int rounds = 1; //This is spun into the RoundFunction abstract class, allows tuning of function round count
+						   //It defaults to 1, but in parametric mode can be set as any other parameter.
 	public static void main(String[] args) {
 		
 		//CONFIGURATION
@@ -26,6 +28,8 @@ public class MSC_S_MAIN {
 				System.out.println("Parameters:");
 				System.out.print("popSize=");
 				_popSize = s.nextInt();
+				System.out.print("rounds=");
+				rounds = s.nextInt();
 				System.out.print("\nfuncCount=");
 				_funcCount = s.nextInt();
 				System.out.print("\npopulationDieOffPercent=");

@@ -8,6 +8,7 @@ public abstract class RoundFunction {
 	 * 
 	 * Parent class of all encoded round functions. Currently, the statesize is locked to 1600 bits.
 	 */
+	static int rounds = MSC_S_MAIN.rounds;
 	RoundFunction(int stateSize){
 		this.stateSize = stateSize;
 		assert stateSize == 1600;
