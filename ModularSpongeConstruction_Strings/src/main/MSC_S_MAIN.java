@@ -319,7 +319,7 @@ public class MSC_S_MAIN {
 		for(int i = 0 ; i < iterations; i++) {
 			String hashString = "";
 			for(int j = 0; j < i; j++) {
-				hashString+="01";
+				hashString+="11110000";
 			}
 			testingFunc.spongeAbsorb(hashString);
 			System.out.println(testingFunc.spongeSqueeze(1));
@@ -331,7 +331,7 @@ public class MSC_S_MAIN {
 		for(int i = 0 ; i < iterations; i++) {
 			String hashString = "";
 			for(int j = 0; j < i; j++) {
-				hashString+="01";
+				hashString+="11110000";
 			}
 			testingFunc.spongeAbsorb(hashString);
 			String outString = "";
