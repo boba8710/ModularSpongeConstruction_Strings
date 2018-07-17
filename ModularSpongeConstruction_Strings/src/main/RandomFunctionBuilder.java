@@ -24,7 +24,7 @@ public class RandomFunctionBuilder {
 			int n,m;
 
 			n = rand.nextInt(25)*64;
-			m = n+64;
+			m = n+63;
 			
 
 			String p = ghm.generateMersenneRandomString(64);
@@ -33,7 +33,7 @@ public class RandomFunctionBuilder {
 			int r, s;
 
 			r = rand.nextInt(25)*64;
-			s = r+64;
+			s = r+63;
 
 			paramString+=r+","+s;
 			if(selected.getId() == "LRO") {
@@ -47,10 +47,10 @@ public class RandomFunctionBuilder {
 				paramString+=n+","+m+","+p;
 			}else{	 
 				int n,m;
-				int offset = rand.nextInt(14)*64; 
+				int offset = rand.nextInt(13)*64; 
 
 				n = rand.nextInt(13)*64;
-				m = n+64;
+				m = n+63;
 
 				int p = n+offset;
 				int q = m+offset;
@@ -73,7 +73,7 @@ public class RandomFunctionBuilder {
 				int n,m;
 
 				n = rand.nextInt(25)*64;
-				m = n+64;
+				m = n+63;
 				
 
 				String p = ghm.generateMersenneRandomString(64);
@@ -82,7 +82,7 @@ public class RandomFunctionBuilder {
 				int r, s;
 
 				r = rand.nextInt(25)*64;
-				s = r+64;
+				s = r+63;
 
 				paramString+=r+","+s;
 				if(selected.getId() == "LRO") {
@@ -91,16 +91,15 @@ public class RandomFunctionBuilder {
 				}else if(selected.getId() == "XOC"){ 
 					int n,m;
 					n = rand.nextInt(25)*64;
-					m = n+64;
+					m = n+63;
 					String p = ghm.generateMersenneRandomString(64);
 					paramString+=n+","+m+","+p;
 				}else{	 
 					int n,m;
-					int offset = rand.nextInt(14)*64; 
+					int offset = rand.nextInt(13)*64; 
 
 					n = rand.nextInt(13)*64;
-					m = n+64;
-
+					m = n+63;
 					int p = n+offset;
 					int q = m+offset;
 					paramString+=n+","+m+","+p+","+q;
