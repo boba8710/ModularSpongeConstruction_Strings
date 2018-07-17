@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class RandomFunctionBuilder {
 	int funcCount, wordSize;
-	static HashOperation[] operations = {new HashOperations.AND(), new HashOperations.LROT(), new HashOperations.NOT(), /*new HashOperations.OR(),*/ new HashOperations.SWAP(), new HashOperations.SWAP0(), new HashOperations.SWAP1(), new HashOperations.SWAP2(), new HashOperations.XOR()/*, new HashOperations.ADD()*/, new HashOperations.XORC()};
+	static HashOperation[] operations = {new HashOperations.AND(), new HashOperations.LROT(), new HashOperations.NOT(), new HashOperations.OR(), /*new HashOperations.SWAP(), new HashOperations.SWAP0(), new HashOperations.SWAP1(), new HashOperations.SWAP2(),*/ new HashOperations.XOR(), new HashOperations.ADD(), new HashOperations.XORC()};
 	//This operations array must be the same in both RandomFunctionBuilder and ModularRoundFunction. Operations can be enabled and disabled by commenting them out.
 	RandomFunctionBuilder(int stateSize, int funcCount, int wordSize){
 		this.funcCount = funcCount; //The functionCount is the amount of functions that each round function will contain. Because this includes
